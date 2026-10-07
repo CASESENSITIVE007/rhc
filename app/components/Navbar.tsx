@@ -6,11 +6,11 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { INTRO_DONE_EVENT } from "./intro";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Services", href: "/#services" },
+  { label: "Contact", href: "/contact" },
 ];
 
 // Scroll distance (px) before direction changes register, and the zone near
@@ -156,7 +156,7 @@ export default function Navbar() {
             <div className="flex items-center">
               {/* Logo — always visible; acts as the expand trigger when collapsed */}
               <Link
-                href="#home"
+                href="/#home"
                 onClick={handleLogoClick}
                 aria-label={expanded ? "RHC home" : "Expand navigation"}
                 aria-expanded={expanded}
@@ -231,7 +231,7 @@ export default function Navbar() {
               inert={!expanded}
             >
               <Link
-                href="#contact"
+                href="/contact"
                 className="hidden rounded-full bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_20px_-6px_rgba(11,111,184,0.7)] transition-all duration-300 hover:shadow-[0_8px_26px_-6px_rgba(11,111,184,0.9)] hover:brightness-110 md:inline-block"
               >
                 Get in touch
@@ -291,7 +291,7 @@ export default function Navbar() {
             ))}
           </ul>
           <Link
-            href="#contact"
+            href="/contact"
             onClick={() => setMenuOpen(false)}
             className="mt-1 block rounded-2xl bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] px-4 py-3 text-center text-sm font-semibold text-white"
           >

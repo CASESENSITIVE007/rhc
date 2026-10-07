@@ -196,7 +196,7 @@ function PropertyCard({
 
           <div className="mt-5 flex flex-col gap-2">
             <Link
-              href="#contact"
+              href="/contact"
               className="group/btn relative flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[#0a1f3d] to-[#0d3b73] py-3 text-sm font-medium text-white shadow-[0_10px_24px_-12px_rgba(10,31,61,0.9)] transition-shadow duration-500 hover:shadow-[0_14px_30px_-12px_rgba(11,111,184,0.9)]"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] opacity-0 transition-opacity duration-500 group-hover/btn:opacity-100" />
