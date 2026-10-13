@@ -9,6 +9,7 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useIntroDone } from "./useIntroDone";
 
@@ -37,7 +38,9 @@ const WORD_SWAP_MS = 550; // slide transition between words
 
 const PLACEHOLDERS = [
   "Search by location, property or project",
+  "Try “About RHC World”",
   "Try “3 BHK near the riverfront”",
+  "Try “Services”",
   "Try “Villas in Varanasi”",
   "Try “Ready-to-move flats”",
 ];
@@ -193,6 +196,7 @@ function BudgetMenu({
 }
 
 export default function Hero() {
+  const router = useRouter();
   const ready = useIntroDone();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -252,6 +256,70 @@ export default function Hero() {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const q = query.trim().toLowerCase();
+    if (
+      q === "about" ||
+      q === "about us" ||
+      q === "about rhc" ||
+      q.includes("about") ||
+      q === "story" ||
+      q === "mission"
+    ) {
+      const el = document.getElementById("about");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#about");
+      }
+      return;
+    }
+    if (q === "contact" || q === "contact us" || q.includes("contact")) {
+      router.push("/contact");
+      return;
+    }
+    if (q.includes("service")) {
+      const el = document.getElementById("services");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#services");
+      }
+      return;
+    }
+    if (q.includes("project")) {
+      const el = document.getElementById("projects");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#projects");
+      }
+      return;
+    }
+    if (
+      q.includes("propert") ||
+      q.includes("feature") ||
+      q.includes("flat") ||
+      q.includes("house") ||
+      q.includes("plot") ||
+      q.includes("villa")
+    ) {
+      const el = document.getElementById("featured");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#featured");
+      }
+      return;
+    }
+    if (q.includes("why") || q.includes("trust") || q.includes("choose")) {
+      const el = document.getElementById("why-choose-us");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#why-choose-us");
+      }
+      return;
+    }
     // TODO: route to the listings page once it exists.
     console.log({ mode, type, budget, query });
   };
@@ -465,7 +533,7 @@ export default function Hero() {
 
       {/* Scroll cue */}
       <motion.a
-        href="#about"
+        href="#featured"
         aria-label="Scroll to explore"
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[11px] font-medium uppercase tracking-[0.3em] text-white/90 sm:flex"
         initial={{ opacity: 0 }}

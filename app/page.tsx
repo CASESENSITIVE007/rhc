@@ -1,9 +1,9 @@
+import AboutSection from "./components/AboutSection";
 import FeaturedProperties from "./components/FeaturedProperties";
 import Hero from "./components/Hero";
 import WhyChooseUs from "./components/WhyChooseUs";
 
 const SECTIONS = [
-  { id: "about", title: "About" },
   { id: "projects", title: "Projects" },
   { id: "services", title: "Services" },
 ];
@@ -25,6 +25,7 @@ export default function Home() {
           </h2>
         </section>
       ))}
+      <AboutSection />
     </main>
   );
 }
