@@ -1,21 +1,12 @@
 // Shared by the contact form (client) and /api/contact (server).
 
-export const INTERESTS = ["Buy", "Invest", "Sell", "Site visit"] as const;
-
-export const BUDGETS = [
-  "Not sure yet",
-  "Under ₹50 L",
-  "₹50 L – ₹1 Cr",
-  "₹1 Cr – ₹3 Cr",
-  "₹3 Cr +",
-] as const;
+export const PROPERTY_TYPES = ["House", "Flat", "Plot", "Commercial"] as const;
 
 export type Enquiry = {
   name: string;
   phone: string;
   email: string;
-  interest: (typeof INTERESTS)[number];
-  budget: (typeof BUDGETS)[number];
+  propertyType: (typeof PROPERTY_TYPES)[number];
   message: string;
 };
 
@@ -31,13 +22,11 @@ export function validateEnquiry(e: Partial<Enquiry>): EnquiryErrors {
   if (phoneDigits.length < 10 || phoneDigits.length > 13)
     errors.phone = "Please enter a valid phone number";
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    errors.email = "Please enter a valid email";
-  if (!INTERESTS.includes(e.interest as Enquiry["interest"]))
-    errors.interest = "Please choose an option";
-  if (!BUDGETS.includes(e.budget as Enquiry["budget"]))
-    errors.budget = "Please choose a budget";
+    errors.email = "Please enter a valid email address";
+  if (!PROPERTY_TYPES.includes(e.propertyType as Enquiry["propertyType"]))
+    errors.propertyType = "Please choose a property type";
   if ((e.message ?? "").length > 1000)
-    errors.message = "Please keep your message under 1000 characters";
+    errors.message = "Please keep your enquiry under 1000 characters";
 
   return errors;
 }

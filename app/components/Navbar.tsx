@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "Home", href: "/#home" },
   { label: "About", href: "/#about" },
   { label: "Projects", href: "/#projects" },
-  { label: "Services", href: "/#services" },
+  { label: "Services", href: "/services" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -171,7 +171,7 @@ export default function Navbar() {
                 />
                 <span className="relative grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-white ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-105">
                   <Image
-                    src="/rhc_logo.jpeg"
+                    src="/RHC_logo.jpeg"
                     alt="RHC logo"
                     width={96}
                     height={96}

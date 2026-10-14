@@ -4,7 +4,7 @@ import ContactView from "../components/contact/ContactView";
 export const metadata: Metadata = {
   title: "Contact | RHC",
   description:
-    "Talk to RHC about buying, investing or visiting verified properties in Varanasi.",
+    "Make an enquiry with RHC — tell us what you are looking for and we will call you back soon.",
 };
 
 export default function ContactPage() {

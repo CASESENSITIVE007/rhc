@@ -19,8 +19,7 @@ export async function POST(request: Request) {
     name: body.name?.trim(),
     phone: body.phone,
     email: body.email || undefined,
-    interest: body.interest,
-    budget: body.budget,
+    propertyType: body.propertyType,
     message: body.message?.trim() || undefined,
   });
 

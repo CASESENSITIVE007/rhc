@@ -1,3 +1,4 @@
+import CommonQuestions from "./components/CommonQuestions";
 import FeaturedProperties from "./components/FeaturedProperties";
 import Hero from "./components/Hero";
 import WhyChooseUs from "./components/WhyChooseUs";
@@ -5,7 +6,6 @@ import WhyChooseUs from "./components/WhyChooseUs";
 const SECTIONS = [
   { id: "about", title: "About" },
   { id: "projects", title: "Projects" },
-  { id: "services", title: "Services" },
 ];
 
 export default function Home() {
@@ -14,6 +14,7 @@ export default function Home() {
       <Hero />
       <FeaturedProperties />
       <WhyChooseUs />
+      <CommonQuestions />
       {SECTIONS.map((section) => (
         <section
           key={section.id}

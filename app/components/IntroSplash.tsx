@@ -86,7 +86,7 @@ export default function IntroSplash() {
 
   return (
     <div
-      id="rhc-intro"
+      id="RHC-intro"
       className="fixed inset-0 z-[100] overflow-hidden"
     >
       {/* ── Doors: two navy panels that slide apart to reveal the site ── */}
@@ -259,7 +259,7 @@ export default function IntroSplash() {
               transition={{ duration: 0.9, ease: EASE_OUT, delay: 2.05 }}
             >
               <Image
-                src="/rhc_logo.jpeg"
+                src="/RHC_logo.jpeg"
                 alt=""
                 width={320}
                 height={320}

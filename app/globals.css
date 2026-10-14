@@ -36,6 +36,6 @@ html {
   }
 }
 
-html[data-intro-seen] #rhc-intro {
+html[data-intro-seen] #RHC-intro {
   display: none;
 }
