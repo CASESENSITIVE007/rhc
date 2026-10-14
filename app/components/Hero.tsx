@@ -265,25 +265,26 @@ export default function Hero() {
       q === "story" ||
       q === "mission"
     ) {
-      const el = document.getElementById("about");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#about");
-      }
+      router.push("/about");
       return;
     }
     if (q === "contact" || q === "contact us" || q.includes("contact")) {
       router.push("/contact");
       return;
     }
-    if (q.includes("service")) {
-      const el = document.getElementById("services");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#services");
-      }
+    if (
+      q.includes("service") ||
+      q.includes("residential") ||
+      q.includes("commercial") ||
+      q.includes("industrial") ||
+      q.includes("management") ||
+      q.includes("valuation") ||
+      q.includes("appraisal") ||
+      q.includes("advisory") ||
+      q.includes("legal") ||
+      q.includes("regulatory")
+    ) {
+      router.push("/services");
       return;
     }
     if (q.includes("project")) {
