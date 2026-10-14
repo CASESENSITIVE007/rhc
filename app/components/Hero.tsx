@@ -288,12 +288,7 @@ export default function Hero() {
       return;
     }
     if (q.includes("project")) {
-      const el = document.getElementById("projects");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#projects");
-      }
+      router.push("/projects");
       return;
     }
     if (

@@ -1,159 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "motion/react";
+import { useState } from "react";
 import { useIntroDone } from "../useIntroDone";
 import ContactForm from "./ContactForm";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// ── Blueprint line drawing (viewBox 1440 × 900, ground at y = 800) ──
-const GROUND = 800;
-
-function tower(x: number, top: number, w: number, gap: number, cols: number) {
-  const paths = [`M${x} ${GROUND}V${top}H${x + w}V${GROUND}`];
-  for (let y = top + gap; y < GROUND - 10; y += gap)
-    paths.push(`M${x} ${y}H${x + w}`);
-  for (let c = 1; c < cols; c++) {
-    const cx = x + (w / cols) * c;
-    paths.push(`M${cx} ${top}V${GROUND}`);
-  }
-  return paths;
-}
-
-// A slab tower whose floors project out to the right, like the design.
-function slabTower(
-  x: number,
-  top: number,
-  w: number,
-  gap: number,
-  reach: number,
-) {
-  const paths = [`M${x} ${GROUND}V${top}H${x + w}V${GROUND}`];
-  for (let y = top + gap; y < GROUND - 20; y += gap) {
-    paths.push(`M${x - 8} ${y}H${x + w}L${x + w + reach} ${y + reach * 0.45}`);
-  }
-  return paths;
-}
-
-function temple(x: number, w: number, h: number) {
-  const top = GROUND - h;
-  return [
-    `M${x} ${GROUND}V${top}H${x + w}V${GROUND}`,
-    `M${x} ${top}Q${x + w / 2} ${top - w * 0.9} ${x + w} ${top}`,
-    `M${x + w / 2} ${top - w * 0.45}V${top - w * 0.75}`,
-    `M${x + w * 0.35} ${GROUND}V${GROUND - h * 0.45}Q${x + w / 2} ${GROUND - h * 0.6} ${x + w * 0.65} ${GROUND - h * 0.45}V${GROUND}`,
-  ];
-}
-
-function house(x: number, w: number, h: number) {
-  const top = GROUND - h;
-  return [
-    `M${x} ${GROUND}V${top}L${x + w / 2} ${top - w * 0.35}L${x + w} ${top}V${GROUND}`,
-    `M${x + w * 0.3} ${GROUND}V${GROUND - h * 0.5}H${x + w * 0.7}V${GROUND}`,
-  ];
-}
-
-const tree = (cx: number, r: number) => [
-  `M${cx - r} ${GROUND - r - 10}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`,
-  `M${cx} ${GROUND}V${GROUND - 10}`,
-];
-
-const STRUCTURES: string[][] = [
-  slabTower(50, 20, 160, 72, 60),
-  tower(250, 420, 90, 46, 2),
-  temple(380, 70, 120),
-  house(480, 80, 70),
-  tree(600, 26),
-  tree(645, 18),
-  temple(690, 56, 95),
-  tower(780, 560, 140, 40, 4),
-  house(950, 70, 60),
-  tree(1060, 30),
-  tower(1120, 300, 120, 50, 3),
-  tree(1290, 34),
-  tree(1350, 22),
-  tower(1380, 470, 90, 44, 2),
-];
-
-// Dashed construction guides
-const GUIDES = [
-  { x1: 0, y1: 120, x2: 1440, y2: 120 },
-  { x1: 0, y1: 640, x2: 1440, y2: 640 },
-  { x1: 470, y1: 0, x2: 470, y2: 900 },
-  { x1: 1250, y1: 0, x2: 1250, y2: 900 },
-];
-
-function Blueprint({ ready }: { ready: boolean }) {
-  let n = 0;
-  return (
-    <svg
-      viewBox="0 0 1440 900"
-      preserveAspectRatio="xMidYMax slice"
-      className="h-full w-full"
-      fill="none"
-      stroke="#0d3b73"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      {GUIDES.map((g, i) => (
-        <motion.line
-          key={`g${i}`}
-          {...g}
-          strokeWidth={1}
-          strokeDasharray="6 8"
-          strokeOpacity={0.12}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: ready ? 1 : 0 }}
-          transition={{ duration: 1.2, delay: ready ? 0.2 + i * 0.15 : 0 }}
-        />
-      ))}
-
-      {/* Ground lines */}
-      {[GROUND, GROUND + 22].map((y, i) => (
-        <motion.path
-          key={`ground${i}`}
-          d={`M0 ${y}H1440`}
-          strokeWidth={1}
-          strokeOpacity={0.14}
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: ready ? 1 : 0 }}
-          transition={{
-            duration: 1.8,
-            ease: EASE,
-            delay: ready ? 0.1 + i * 0.15 : 0,
-          }}
-        />
-      ))}
-
-      {STRUCTURES.map((paths, s) =>
-        paths.map((d, p) => {
-          const i = n++;
-          return (
-            <motion.path
-              key={`${s}-${p}`}
-              d={d}
-              strokeWidth={p === 0 ? 1.4 : 1}
-              strokeOpacity={p === 0 ? 0.17 : 0.11}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: ready ? 1 : 0 }}
-              transition={{
-                duration: p === 0 ? 1.8 : 1.1,
-                ease: "easeInOut",
-                delay: ready ? 0.3 + s * 0.08 + p * 0.03 + (i % 3) * 0.02 : 0,
-              }}
-            />
-          );
-        }),
-      )}
-    </svg>
-  );
-}
-
 export default function ContactView() {
   const ready = useIntroDone();
+  // The sketch reveal waits for its image, so it never pops in afterwards.
+  const [artLoaded, setArtLoaded] = useState(false);
+  const reveal = ready && artLoaded;
 
-  // Gentle mouse parallax on the drawing.
+  // Gentle mouse parallax on the sketch.
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const artX = useSpring(mx, { stiffness: 50, damping: 20 });
@@ -169,13 +30,51 @@ export default function ContactView() {
       onMouseMove={onMouseMove}
       className="relative isolate flex flex-1 items-center overflow-hidden bg-[#f6f4f1]"
     >
-      {/* Background drawing + atmosphere */}
+      {/* Ghat sketch, "drawn" upward by a scanning light. The multiply blend
+          sits on this outer layer so the sketch's grey paper melts into the
+          page colour and only the blue lines remain. */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -inset-6 -z-10"
+        className="pointer-events-none absolute -inset-6 -z-10 mix-blend-multiply"
         style={{ x: artX, y: artY }}
       >
-        <Blueprint ready={ready} />
+        <motion.div
+          className="absolute inset-0"
+          initial={{ clipPath: "inset(100% 0 0 0)" }}
+          animate={{
+            clipPath: reveal ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",
+          }}
+          transition={{ duration: 2.6, ease: EASE, delay: reveal ? 0.2 : 0 }}
+        >
+          <motion.div
+            className="absolute inset-0"
+            initial={{ scale: 1.08 }}
+            animate={{ scale: reveal ? 1 : 1.08 }}
+            transition={{ duration: 3.2, ease: EASE, delay: reveal ? 0.2 : 0 }}
+          >
+            <Image
+              src="/ContactBg2.jpeg"
+              alt=""
+              fill
+              sizes="100vw"
+              loading="eager"
+              onLoad={() => setArtLoaded(true)}
+              className="object-cover object-bottom opacity-[0.36]"
+            />
+          </motion.div>
+        </motion.div>
+
+        {/* Scanning light riding the reveal edge */}
+        <motion.span
+          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[#0b6fb8] to-transparent shadow-[0_0_28px_6px_rgba(124,196,255,0.55)]"
+          initial={{ top: "100%", opacity: 0 }}
+          animate={
+            reveal
+              ? { top: "0%", opacity: [0, 1, 1, 0] }
+              : { top: "100%", opacity: 0 }
+          }
+          transition={{ duration: 2.6, ease: EASE, delay: reveal ? 0.2 : 0 }}
+        />
       </motion.div>
       <div
         aria-hidden
@@ -188,7 +87,12 @@ export default function ContactView() {
 
       <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-5 pb-24 pt-36 sm:px-10 lg:grid-cols-2 lg:gap-16 lg:pt-40">
         {/* ── Left: heading ── */}
-        <div>
+        <div className="relative">
+          {/* Soft wash of the page colour so the sketch never fights the text */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-16 -inset-y-12 -z-10 rounded-full bg-[#f6f4f1]/85 blur-2xl"
+          />
           <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-[#0a1f3d] sm:text-6xl">
             {["Make an", "Enquiry."].map((word, i) => (
               <span

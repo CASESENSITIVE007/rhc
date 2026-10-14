@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring } from "motion/react";
+import { useState } from "react";
 import { useIntroDone } from "../useIntroDone";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -129,6 +131,9 @@ function ServiceRow({
 
 export default function ServicesView() {
   const ready = useIntroDone();
+  // The sketch reveal waits for its image, so it never pops in afterwards.
+  const [artLoaded, setArtLoaded] = useState(false);
+  const reveal = ready && artLoaded;
 
   // Gentle mouse parallax on the line-art background.
   const mx = useMotionValue(0);
@@ -153,19 +158,50 @@ export default function ServicesView() {
       onMouseMove={onMouseMove}
       className="relative isolate flex flex-1 items-center overflow-hidden bg-[#f7f5f2]"
     >
-      {/* Line-art building in brand blue, rising in from the bottom */}
+      {/* Sketch of the building, "drawn" upward by a scanning light. The
+          multiply blend sits on this outer layer so the sketch's grey paper
+          melts into the page colour and only the blue lines remain. */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -inset-8 -z-10"
+        className="pointer-events-none absolute -inset-8 -z-10 mix-blend-multiply"
         style={{ x: artX, y: artY }}
       >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#0b6fb8] to-[#0d3b73] opacity-[0.12] [mask-image:url(/whyChooseBackground.png)] [mask-position:left_bottom] [mask-repeat:no-repeat] [mask-size:auto_78%]"
+          className="absolute inset-0"
           initial={{ clipPath: "inset(100% 0 0 0)" }}
           animate={{
-            clipPath: ready ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",
+            clipPath: reveal ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",
           }}
-          transition={{ duration: 2.4, ease: EASE, delay: ready ? 0.2 : 0 }}
+          transition={{ duration: 2.6, ease: EASE, delay: reveal ? 0.2 : 0 }}
+        >
+          <motion.div
+            className="absolute inset-0"
+            initial={{ scale: 1.08 }}
+            animate={{ scale: reveal ? 1 : 1.08 }}
+            transition={{ duration: 3.2, ease: EASE, delay: reveal ? 0.2 : 0 }}
+          >
+            <Image
+              src="/ourServicesBg.jpeg"
+              alt=""
+              fill
+              sizes="100vw"
+              loading="eager"
+              onLoad={() => setArtLoaded(true)}
+              className="object-cover object-bottom opacity-[0.36]"
+            />
+          </motion.div>
+        </motion.div>
+
+        {/* Scanning light riding the reveal edge */}
+        <motion.span
+          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[#0b6fb8] to-transparent shadow-[0_0_28px_6px_rgba(124,196,255,0.55)]"
+          initial={{ top: "100%", opacity: 0 }}
+          animate={
+            reveal
+              ? { top: "0%", opacity: [0, 1, 1, 0] }
+              : { top: "100%", opacity: 0 }
+          }
+          transition={{ duration: 2.6, ease: EASE, delay: reveal ? 0.2 : 0 }}
         />
       </motion.div>
       <div
@@ -179,7 +215,12 @@ export default function ServicesView() {
 
       <div className="mx-auto grid w-full max-w-7xl items-center gap-14 px-5 pb-24 pt-36 sm:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:pt-40">
         {/* ── Left: intro ── */}
-        <div className="lg:sticky lg:top-40 lg:self-center">
+        <div className="relative lg:sticky lg:top-40 lg:self-center">
+          {/* Soft wash of the page colour so the sketch never fights the text */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-16 -inset-y-12 -z-10 rounded-full bg-[#f7f5f2]/85 blur-2xl"
+          />
           <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-[#0a1f3d] sm:text-6xl">
             <span className="inline-block overflow-hidden pb-2 align-bottom">
               <motion.span

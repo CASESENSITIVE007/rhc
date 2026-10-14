@@ -344,7 +344,7 @@ export default function FeaturedProperties() {
               />
             </div>
             <Link
-              href="#projects"
+              href="/projects"
               className="group relative inline-flex h-12 items-center gap-2 overflow-hidden whitespace-nowrap rounded-full border border-[#0a1f3d] px-6 text-sm font-medium text-[#0a1f3d]"
             >
               <span className="absolute inset-0 origin-left scale-x-0 rounded-full bg-[#0a1f3d] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
