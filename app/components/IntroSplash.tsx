@@ -259,7 +259,7 @@ export default function IntroSplash() {
               transition={{ duration: 0.9, ease: EASE_OUT, delay: 2.05 }}
             >
               <Image
-                src="/RHC_logo.jpeg"
+                src="/rhc_logo.jpeg"
                 alt=""
                 width={320}
                 height={320}

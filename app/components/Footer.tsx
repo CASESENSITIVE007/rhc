@@ -172,7 +172,7 @@ export default function Footer() {
                 <span className="absolute -inset-[3px] rounded-full bg-[conic-gradient(from_0deg,#0b6fb8,#7cc4ff,#1f4e8c,#0b6fb8)] opacity-70 transition-opacity duration-500 group-hover:opacity-100 motion-safe:animate-[nav-spin_8s_linear_infinite]" />
                 <span className="relative grid h-14 w-14 place-items-center overflow-hidden rounded-full bg-white">
                   <Image
-                    src="/RHC_logo.jpeg"
+                    src="/rhc_logo.jpeg"
                     alt="RHC logo"
                     width={112}
                     height={112}

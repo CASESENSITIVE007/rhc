@@ -174,7 +174,7 @@ export default function Navbar() {
                 />
                 <span className="relative grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-white ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-105">
                   <Image
-                    src="/RHC_logo.jpeg"
+                    src="/rhc_logo.jpeg"
                     alt="RHC logo"
                     width={96}
                     height={96}
