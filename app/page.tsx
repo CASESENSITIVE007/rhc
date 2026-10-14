@@ -4,8 +4,9 @@ import Hero from "./components/Hero";
 import WhyChooseUs from "./components/WhyChooseUs";
 
 const SECTIONS = [
-  { id: "about", title: "About" },
   { id: "projects", title: "Projects" },
+  { id: "services", title: "Services" },
+  { id: "about", title: "About" },
 ];
 
 export default function Home() {

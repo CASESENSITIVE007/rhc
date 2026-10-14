@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { INTRO_DONE_EVENT } from "./intro";
 
 const NAV_LINKS = [
   { label: "Home", href: "/#home" },
-  { label: "About", href: "/#about" },
+  { label: "About", href: "/about" },
   { label: "Projects", href: "/#projects" },
   { label: "Services", href: "/services" },
   { label: "Contact", href: "/contact" },
@@ -30,6 +31,8 @@ const reveal = (expanded: boolean, delay: number, offset = 16) => ({
 });
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   // Starts collapsed so the capsule plays its left-to-right intro once the
   // splash intro has finished (or immediately if it was already seen).
   const [expanded, setExpanded] = useState(false);
@@ -206,21 +209,32 @@ export default function Navbar() {
                   opacity: hover ? 1 : 0,
                 }}
               />
-              {NAV_LINKS.map((link, i) => (
-                <li
-                  key={link.href}
-                  className="relative transition-all duration-500"
-                  style={reveal(expanded, 200 + i * 60)}
-                  onMouseEnter={showHover}
-                >
-                  <Link
-                    href={link.href}
-                    className="block rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-[#0d3b73] focus-visible:text-[#0d3b73] focus-visible:outline-none"
+              {NAV_LINKS.map((link, i) => {
+                const isActive =
+                  link.href.startsWith("/") && !link.href.includes("#")
+                    ? pathname === link.href
+                    : false;
+
+                return (
+                  <li
+                    key={link.href}
+                    className="relative transition-all duration-500"
+                    style={reveal(expanded, 200 + i * 60)}
+                    onMouseEnter={showHover}
                   >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+                    <Link
+                      href={link.href}
+                      className={`block rounded-full px-4 py-2 text-sm transition-colors focus-visible:outline-none ${
+                        isActive
+                          ? "font-semibold text-[#0d3b73]"
+                          : "font-medium text-slate-600 hover:text-[#0d3b73] focus-visible:text-[#0d3b73]"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
 
             {/* Right: CTA (desktop) / menu toggle (mobile) */}
@@ -278,17 +292,28 @@ export default function Navbar() {
           inert={!menuOpen}
         >
           <ul className="flex flex-col">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="block rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-[#0b6fb8]/10 hover:text-[#0d3b73]"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive =
+                link.href.startsWith("/") && !link.href.includes("#")
+                  ? pathname === link.href
+                  : false;
+
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={`block rounded-2xl px-4 py-3 text-sm transition-colors ${
+                      isActive
+                        ? "bg-[#0b6fb8]/15 font-semibold text-[#0d3b73]"
+                        : "font-medium text-slate-700 hover:bg-[#0b6fb8]/10 hover:text-[#0d3b73]"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
           <Link
             href="/contact"
