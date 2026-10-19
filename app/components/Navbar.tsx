@@ -9,7 +9,7 @@ import { INTRO_DONE_EVENT } from "./intro";
 const NAV_LINKS = [
   { label: "Home", href: "/#home" },
   { label: "About", href: "/about" },
-  { label: "Projects", href: "/projects" },
+  { label: "Properties", href: "/properties" },
   { label: "Services", href: "/services" },
   { label: "Contact", href: "/contact" },
 ];
@@ -212,7 +212,7 @@ export default function Navbar() {
               {NAV_LINKS.map((link, i) => {
                 const isActive =
                   link.href.startsWith("/") && !link.href.includes("#")
-                    ? pathname === link.href
+                    ? pathname === link.href || pathname.startsWith(`${link.href}/`)
                     : false;
 
                 return (
@@ -295,7 +295,7 @@ export default function Navbar() {
             {NAV_LINKS.map((link) => {
               const isActive =
                 link.href.startsWith("/") && !link.href.includes("#")
-                  ? pathname === link.href
+                  ? pathname === link.href || pathname.startsWith(`${link.href}/`)
                   : false;
 
               return (
