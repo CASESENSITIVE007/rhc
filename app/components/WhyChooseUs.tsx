@@ -58,8 +58,8 @@ function ReasonCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.9, ease: EASE, delay }}
     >
@@ -150,7 +150,7 @@ export default function WhyChooseUs() {
         style={{ y: artY }}
       >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#0b6fb8] to-[#0d3b73] opacity-[0.16] [mask-image:url(/whyChooseBackground.png)] [mask-position:center_bottom] [mask-repeat:no-repeat] [mask-size:auto_96%]"
+          className="absolute inset-0 bg-gradient-to-t from-[#0b6fb8] to-[#0d3b73] opacity-[0.16] [mask-image:url(/whyChooseBackground.webp)] [mask-position:center_bottom] [mask-repeat:no-repeat] [mask-size:auto_96%]"
           initial={{ clipPath: "inset(100% 0 0 0)" }}
           animate={{ clipPath: inView ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)" }}
           transition={{ duration: 2.4, ease: EASE }}

@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import AboutSection from "../components/AboutSection";
+import AboutView from "../components/about/AboutView";
 
 export const metadata: Metadata = {
   title: "About | RHC",
   description:
-    "Local expertise, verified properties, and personal guidance for a simpler property journey across Kashi and Purvanchal.",
+    "Meet the founder behind RHC World — helping families buy homes and invest in property across Varanasi, Kashi and Purvanchal since 2015.",
 };
 
 export default function AboutPage() {
-  return (
-    <main className="min-h-screen">
-      <AboutSection isStandalone />
-    </main>
-  );
+  return <AboutView />;
 }

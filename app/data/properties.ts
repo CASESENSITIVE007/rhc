@@ -28,6 +28,8 @@ export type Property = {
   parking: number;
   price: string;
   area: number; // sq ft
+  /** Estimated monthly rent in rupees. */
+  rent: number;
   facing: string;
   status: string;
   furnishing: string;
@@ -67,6 +69,7 @@ export const PROPERTIES: Property[] = [
     parking: 1,
     price: "₹1.3Cr",
     area: 1456,
+    rent: 38000,
     facing: "East",
     status: "Ready to move",
     furnishing: "Semi-furnished",
@@ -99,6 +102,7 @@ export const PROPERTIES: Property[] = [
     parking: 2,
     price: "₹2.4Cr",
     area: 2310,
+    rent: 65000,
     facing: "North-East",
     status: "Ready to move",
     furnishing: "Fully furnished",
@@ -132,6 +136,7 @@ export const PROPERTIES: Property[] = [
     parking: 1,
     price: "₹86L",
     area: 1180,
+    rent: 26000,
     facing: "East",
     status: "Under construction",
     furnishing: "Unfurnished",
@@ -164,6 +169,7 @@ export const PROPERTIES: Property[] = [
     parking: 1,
     price: "₹1.1Cr",
     area: 1320,
+    rent: 34000,
     facing: "West",
     status: "Ready to move",
     furnishing: "Semi-furnished",
@@ -196,6 +202,7 @@ export const PROPERTIES: Property[] = [
     parking: 2,
     price: "₹1.7Cr",
     area: 1890,
+    rent: 50000,
     facing: "North",
     status: "Ready to move",
     furnishing: "Semi-furnished",
@@ -228,6 +235,7 @@ export const PROPERTIES: Property[] = [
     parking: 1,
     price: "₹68L",
     area: 960,
+    rent: 22000,
     facing: "South-East",
     status: "Ready to move",
     furnishing: "Unfurnished",
@@ -251,6 +259,7 @@ export const PROPERTIES: Property[] = [
     parking: 1,
     price: "₹1.9Cr",
     area: 1640,
+    rent: 62000,
     facing: "East",
     status: "Ready to move",
     furnishing: "Fully furnished",
@@ -282,6 +291,7 @@ export const PROPERTIES: Property[] = [
     parking: 2,
     price: "₹74L",
     area: 1500,
+    rent: 21000,
     facing: "North-East",
     status: "New launch",
     furnishing: "Unfurnished",
@@ -307,6 +317,26 @@ export function priceInRupees(price: string) {
   if (/cr/i.test(price)) return n * 1e7;
   if (/l/i.test(price)) return n * 1e5;
   return n;
+}
+
+/** Other listings, closest in price first. */
+export function similarTo(p: Property) {
+  const gap = (o: Property) =>
+    Math.abs(priceInRupees(o.price) - priceInRupees(p.price));
+  return PROPERTIES.filter((o) => o.id !== p.id).sort((a, b) => gap(a) - gap(b));
+}
+
+/** How another listing's price compares, as a short card label. */
+export function priceBadge(base: Property, other: Property) {
+  const ratio = priceInRupees(other.price) / priceInRupees(base.price);
+  if (ratio < 0.8) return "Lower budget";
+  if (ratio > 1.25) return "Premium pick";
+  return "Similar price";
+}
+
+/** Gross annual rental yield, as a percentage. */
+export function rentalYield(p: Property) {
+  return ((p.rent * 12) / priceInRupees(p.price)) * 100;
 }
 
 export function pricePerSqft(p: Property) {

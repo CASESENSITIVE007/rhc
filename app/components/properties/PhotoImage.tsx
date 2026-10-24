@@ -6,13 +6,13 @@ export default function PhotoImage({
   photo,
   alt,
   sizes,
-  priority,
+  preload,
   className = "",
 }: {
   photo: Photo;
   alt: string;
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   className?: string;
 }) {
   const image = (
@@ -21,7 +21,7 @@ export default function PhotoImage({
       alt={alt}
       fill
       sizes={sizes}
-      priority={priority}
+      preload={preload}
       className={`object-cover ${className}`}
       style={photo.position ? { objectPosition: photo.position } : undefined}
     />

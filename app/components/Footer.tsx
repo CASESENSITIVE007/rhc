@@ -99,7 +99,7 @@ export default function Footer() {
         <div className="absolute -right-40 bottom-10 h-[460px] w-[460px] rounded-full bg-[#1f4e8c]/30 blur-[130px]" />
         <div className="absolute inset-0 [background-image:linear-gradient(rgba(124,196,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(124,196,255,0.05)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_top,black_10%,transparent_70%)]" />
         {/* Blueprint building, echoing the Why Choose Us section */}
-        <div className="absolute -right-24 bottom-0 h-[90%] w-[70%] bg-gradient-to-t from-[#7cc4ff] to-[#0b6fb8] opacity-[0.07] [mask-image:url(/whyChooseBackground.png)] [mask-position:right_bottom] [mask-repeat:no-repeat] [mask-size:contain]" />
+        <div className="absolute -right-24 bottom-0 h-[90%] w-[70%] bg-gradient-to-t from-[#7cc4ff] to-[#0b6fb8] opacity-[0.07] [mask-image:url(/whyChooseBackground.webp)] [mask-position:right_bottom] [mask-repeat:no-repeat] [mask-size:contain]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-5 sm:px-10">

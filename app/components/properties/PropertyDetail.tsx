@@ -12,10 +12,10 @@ import {
 import { useEffect, useRef, useState } from "react";
 import {
   AMENITY_LABELS,
-  PROPERTIES,
   galleryPhotos,
-  priceInRupees,
   pricePerSqft,
+  priceBadge,
+  similarTo,
   type Property,
 } from "../../data/properties";
 import { useIntroDone } from "../useIntroDone";
@@ -111,12 +111,6 @@ function ShareButton({ name }: { name: string }) {
   );
 }
 
-function priceBadge(base: Property, other: Property) {
-  const ratio = priceInRupees(other.price) / priceInRupees(base.price);
-  if (ratio < 0.8) return "Lower budget";
-  if (ratio > 1.25) return "Premium pick";
-  return "Similar price";
-}
 
 export default function PropertyDetail({ property }: { property: Property }) {
   const ready = useIntroDone();
@@ -126,13 +120,7 @@ export default function PropertyDetail({ property }: { property: Property }) {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
-  const similar = PROPERTIES.filter((p) => p.id !== property.id)
-    .sort(
-      (a, b) =>
-        Math.abs(priceInRupees(a.price) - priceInRupees(property.price)) -
-        Math.abs(priceInRupees(b.price) - priceInRupees(property.price)),
-    )
-    .slice(0, 3);
+  const similar = similarTo(property).slice(0, 3);
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: 18 },

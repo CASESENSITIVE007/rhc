@@ -39,7 +39,7 @@ export default function ProjectsView() {
         style={{ x: artX, y: artY }}
       >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-[#0b6fb8] to-[#0d3b73] opacity-[0.12] [mask-image:url(/whyChooseBackground.png)] [mask-position:center_bottom] [mask-repeat:no-repeat] [mask-size:auto_80%]"
+          className="absolute inset-0 bg-gradient-to-t from-[#0b6fb8] to-[#0d3b73] opacity-[0.12] [mask-image:url(/whyChooseBackground.webp)] [mask-position:center_bottom] [mask-repeat:no-repeat] [mask-size:auto_80%]"
           initial={{ clipPath: "inset(100% 0 0 0)" }}
           animate={{
             clipPath: ready ? "inset(0% 0 0 0)" : "inset(100% 0 0 0)",

@@ -223,7 +223,7 @@ export default function Gallery({
                 photo={photo}
                 alt={`${name} — photo ${i + 1}`}
                 sizes={i === 0 ? "(min-width: 1280px) 640px, 50vw" : "320px"}
-                priority={i === 0}
+                preload={i === 0}
                 className="transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
               />
             </motion.div>
@@ -269,7 +269,7 @@ export default function Gallery({
                 photo={photo}
                 alt={`${name} — photo ${i + 1}`}
                 sizes="100vw"
-                priority={i === 0}
+                preload={i === 0}
               />
             </button>
           ))}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -17,11 +17,6 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "RHC",
   description: "RHC",
@@ -31,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${playfair.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

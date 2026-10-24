@@ -3,12 +3,23 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
-import { PROPERTIES, priceInRupees } from "../../data/properties";
+import {
+  PROPERTIES,
+  priceInRupees,
+  rentalYield,
+} from "../../data/properties";
 import { useIntroDone } from "../useIntroDone";
 import Icon from "./Icon";
+import InvestmentCard from "./InvestmentCard";
 import PropertyCard from "./PropertyCard";
+import PropertyRail, { RAIL_CARD } from "./PropertyRail";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+const ACCENT =
+  "bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] bg-clip-text pr-1 text-transparent";
+
+const INVESTMENTS = [...PROPERTIES].sort((a, b) => rentalYield(b) - rentalYield(a));
 
 const BUDGETS = [
   { label: "Any budget", min: 0, max: Infinity },
@@ -170,10 +181,27 @@ export default function PropertiesView() {
           </motion.dl>
         </div>
 
+        {/* All properties */}
+        <section id="all" className="mt-24 scroll-mt-28">
+          <h2 className="overflow-hidden pb-1 font-serif text-4xl leading-[1.1] text-[#0a1f3d] sm:text-5xl">
+            <motion.span
+              className="block"
+              initial={{ y: "105%" }}
+              whileInView={{ y: "0%" }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: EASE }}
+            >
+              All <em className={ACCENT}>properties</em>
+            </motion.span>
+          </h2>
+
         {/* Filters */}
         <motion.div
-          {...enter(0.55)}
-          className="sticky top-24 z-20 mt-12 flex flex-wrap items-center gap-3 rounded-[26px] bg-white/80 p-2 shadow-[0_18px_40px_-28px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] backdrop-blur-xl sm:top-28"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: EASE }}
+          className="sticky top-24 z-20 mt-8 flex flex-wrap items-center gap-3 rounded-[26px] bg-white/80 p-2 shadow-[0_18px_40px_-28px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] backdrop-blur-xl sm:top-28"
         >
           <div
             role="group"
@@ -243,7 +271,7 @@ export default function PropertiesView() {
                 layout
                 initial={{ opacity: 0, scale: 0.94 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
+                exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5, ease: EASE }}
               >
                 <PropertyCard property={p} index={i % 3} className="h-full" />
@@ -286,6 +314,44 @@ export default function PropertiesView() {
             </motion.div>
           )}
         </AnimatePresence>
+        </section>
+
+        {/* Featured */}
+        <section className="mt-28">
+          <PropertyRail
+            title={
+              <>
+                Featured{" "}
+                <em className={ACCENT}>Properties</em>
+              </>
+            }
+            subtitle="Hand-picked homes our team would buy themselves."
+            href="#all"
+          >
+            {PROPERTIES.map((p, i) => (
+              <PropertyCard key={p.id} property={p} index={i} className={RAIL_CARD} />
+            ))}
+          </PropertyRail>
+        </section>
+
+        {/* Investment */}
+        <section className="mt-20">
+          <PropertyRail
+            title={
+              <>
+                Investment <em className={ACCENT}>opportunities</em>
+              </>
+            }
+            subtitle="Homes with the strongest rental returns in Varanasi."
+            href="#all"
+            note="Rental figures are estimates based on current rents and are not guaranteed."
+          >
+            {INVESTMENTS.map((p, i) => (
+              <InvestmentCard key={p.id} property={p} index={i} className={RAIL_CARD} />
+            ))}
+          </PropertyRail>
+        </section>
+
       </div>
     </main>
   );

@@ -84,8 +84,8 @@ export default function PropertyCard({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 50, scale: 0.96, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 50, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{
         duration: 0.9,

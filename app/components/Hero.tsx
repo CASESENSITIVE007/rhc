@@ -350,7 +350,6 @@ export default function Hero() {
               fill
               preload
               sizes="100vw"
-              quality={90}
               className="object-cover object-[62%_center]"
             />
           </motion.div>
