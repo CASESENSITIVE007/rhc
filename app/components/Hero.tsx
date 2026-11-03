@@ -9,203 +9,30 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import Icon, { type IconName } from "./properties/Icon";
 import { useIntroDone } from "./useIntroDone";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-const MODES = ["Buy", "Invest"] as const;
-type Mode = (typeof MODES)[number];
-
-const TYPES: Record<Mode, string[]> = {
-  Buy: ["House", "Flat"],
-  Invest: ["Plot", "Commercial"],
-};
-
-const BUDGETS = [
-  "Any budget",
-  "Under ₹50 L",
-  "₹50 L – ₹1 Cr",
-  "₹1 Cr – ₹3 Cr",
-  "₹3 Cr +",
-];
 
 // Rotating word in the headline: "that feels ___."
 const FEEL_WORDS = ["right", "perfect", "ideal", "natural"];
 const WORD_HOLD_MS = 1000; // how long each word stays on screen
 const WORD_SWAP_MS = 550; // slide transition between words
 
-const PLACEHOLDERS = [
-  "Search by location, property or project",
-  "Try “About RHC World”",
-  "Try “3 BHK near the riverfront”",
-  "Try “Services”",
-  "Try “Villas in Varanasi”",
-  "Try “Ready-to-move flats”",
+// What RHC offers, shown under the headline.
+const OFFERS: { icon: IconName; title: string; text: string; href: string }[] = [
+  { icon: "home", title: "Buy", text: "Homes, flats and villas", href: "/properties" },
+  { icon: "area", title: "Invest", text: "Residential and commercial plots", href: "/properties" },
+  { icon: "shield", title: "Verify", text: "Every document checked", href: "/services" },
+  { icon: "calendar", title: "Visit", text: "Guided site visits", href: "/contact" },
 ];
 
-/** Navy pill toggle with a sliding active indicator. */
-function Segmented({
-  id,
-  options,
-  value,
-  onChange,
-}: {
-  id: string;
-  options: readonly string[];
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div
-      role="radiogroup"
-      className="inline-flex rounded-full border border-white/70 bg-white/70 p-1 shadow-[0_4px_16px_-6px_rgba(13,59,115,0.25)] backdrop-blur-md"
-    >
-      {options.map((opt) => {
-        const active = opt === value;
-        return (
-          <button
-            key={opt}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            onClick={() => onChange(opt)}
-            className={`relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-300 ${
-              active ? "text-white" : "text-[#0d3b73] hover:text-[#0b6fb8]"
-            }`}
-          >
-            {active && (
-              <motion.span
-                layoutId={`${id}-pill`}
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#0d3b73] to-[#0b6fb8] shadow-[0_4px_14px_-4px_rgba(11,111,184,0.7)]"
-                transition={{ type: "spring", stiffness: 420, damping: 34 }}
-              />
-            )}
-            <span className="relative">{opt}</span>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function BudgetMenu({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onPointer = (e: PointerEvent) => {
-      if (!ref.current?.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("pointerdown", onPointer);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("pointerdown", onPointer);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        className="inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/80 px-4 py-2 text-sm font-medium text-[#0d3b73] shadow-[0_4px_16px_-6px_rgba(13,59,115,0.25)] backdrop-blur-md transition-colors hover:bg-white"
-      >
-        {value === BUDGETS[0] ? "Budget" : value}
-        <motion.svg
-          viewBox="0 0 20 20"
-          className="h-4 w-4"
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: EASE }}
-        >
-          <path
-            d="M5 7.5l5 5 5-5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.8}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </motion.svg>
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.ul
-            role="listbox"
-            className="absolute left-0 top-full z-20 mt-2 w-52 origin-top-left overflow-hidden rounded-2xl border border-white/70 bg-white/90 p-1.5 shadow-[0_20px_40px_-12px_rgba(13,59,115,0.35)] backdrop-blur-xl"
-            initial={{ opacity: 0, scale: 0.92, y: -6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -4 }}
-            transition={{ duration: 0.25, ease: EASE }}
-          >
-            {BUDGETS.map((b, i) => (
-              <motion.li
-                key={b}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.03 * i, duration: 0.25 }}
-              >
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={b === value}
-                  onClick={() => {
-                    onChange(b);
-                    setOpen(false);
-                  }}
-                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm transition-colors ${
-                    b === value
-                      ? "bg-[#0b6fb8]/10 font-semibold text-[#0d3b73]"
-                      : "text-slate-600 hover:bg-[#0b6fb8]/5 hover:text-[#0d3b73]"
-                  }`}
-                >
-                  {b}
-                  {b === value && (
-                    <svg viewBox="0 0 20 20" className="h-4 w-4 text-[#0b6fb8]">
-                      <path
-                        d="M5 10.5l3 3 7-7"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </button>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function Hero() {
-  const router = useRouter();
   const ready = useIntroDone();
   const sectionRef = useRef<HTMLElement>(null);
 
-  const [mode, setMode] = useState<Mode>("Buy");
-  const [type, setType] = useState(TYPES.Buy[0]);
-  const [budget, setBudget] = useState(BUDGETS[0]);
-  const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
-  const [hint, setHint] = useState(0);
   const [word, setWord] = useState(0);
 
   // Rotate the headline word forever, once the headline has animated in.
@@ -217,16 +44,6 @@ export default function Hero() {
     );
     return () => clearInterval(t);
   }, [ready]);
-
-  // Cycle the search hint while the field is empty and idle.
-  useEffect(() => {
-    if (focused || query) return;
-    const t = setInterval(
-      () => setHint((h) => (h + 1) % PLACEHOLDERS.length),
-      3200,
-    );
-    return () => clearInterval(t);
-  }, [focused, query]);
 
   // Scroll parallax: image drifts slower than the page, content fades away.
   const { scrollYProgress } = useScroll({
@@ -247,77 +64,6 @@ export default function Hero() {
     const { innerWidth: w, innerHeight: h } = window;
     mx.set((e.clientX / w - 0.5) * -18);
     my.set((e.clientY / h - 0.5) * -12);
-  };
-
-  const changeMode = (m: string) => {
-    setMode(m as Mode);
-    setType(TYPES[m as Mode][0]);
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const q = query.trim().toLowerCase();
-    if (
-      q === "about" ||
-      q === "about us" ||
-      q === "about rhc" ||
-      q.includes("about") ||
-      q === "story" ||
-      q === "mission"
-    ) {
-      router.push("/about");
-      return;
-    }
-    if (q === "contact" || q === "contact us" || q.includes("contact")) {
-      router.push("/contact");
-      return;
-    }
-    if (
-      q.includes("service") ||
-      q.includes("residential") ||
-      q.includes("commercial") ||
-      q.includes("industrial") ||
-      q.includes("management") ||
-      q.includes("valuation") ||
-      q.includes("appraisal") ||
-      q.includes("advisory") ||
-      q.includes("legal") ||
-      q.includes("regulatory")
-    ) {
-      router.push("/services");
-      return;
-    }
-    if (q.includes("project")) {
-      router.push("/projects");
-      return;
-    }
-    if (
-      q.includes("propert") ||
-      q.includes("feature") ||
-      q.includes("flat") ||
-      q.includes("house") ||
-      q.includes("plot") ||
-      q.includes("villa")
-    ) {
-      const el = document.getElementById("featured");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#featured");
-      }
-      return;
-    }
-    if (q.includes("why") || q.includes("trust") || q.includes("choose")) {
-      const el = document.getElementById("why-choose-us");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#why-choose-us");
-      }
-      return;
-    }
-    // TODO: route to the listings page once it exists.
-    console.log({ mode, type, budget, query });
   };
 
   // Entrance helper — everything waits for the splash intro to finish.
@@ -415,113 +161,54 @@ export default function Hero() {
             Explore verified properties, projects and opportunities with RHC.
           </motion.p>
 
-          <motion.div {...enter(0.6)} className="mt-8">
-            <Segmented
-              id="mode"
-              options={MODES}
-              value={mode}
-              onChange={changeMode}
-            />
-          </motion.div>
-
-          {/* Search */}
-          <motion.form
-            {...enter(0.72)}
-            onSubmit={onSubmit}
-            role="search"
-            className={`group mt-4 flex items-center gap-3 rounded-full border bg-white/90 py-2 pl-5 pr-2 backdrop-blur-xl transition-all duration-500 ${
-              focused
-                ? "border-[#0b6fb8]/40 shadow-[0_0_0_6px_rgba(11,111,184,0.12),0_20px_50px_-15px_rgba(13,59,115,0.45)]"
-                : "border-white/80 shadow-[0_18px_45px_-18px_rgba(13,59,115,0.4)]"
-            }`}
+          {/* What we offer */}
+          <motion.ul
+            className="mt-9 grid max-w-xl grid-cols-2 gap-3"
+            initial="hidden"
+            animate={ready ? "show" : "hidden"}
+            variants={{ show: { transition: { staggerChildren: 0.08, delayChildren: 0.6 } } }}
           >
-            <svg
-              viewBox="0 0 24 24"
-              className={`h-5 w-5 shrink-0 transition-colors ${
-                focused ? "text-[#0b6fb8]" : "text-slate-500"
-              }`}
+            {OFFERS.map((o) => (
+              <motion.li
+                key={o.title}
+                variants={{
+                  hidden: { opacity: 0, y: 18 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+                }}
+              >
+                <Link
+                  href={o.href}
+                  className="group flex h-full items-center gap-3 rounded-2xl border border-white/70 bg-white/75 p-3 shadow-[0_14px_34px_-20px_rgba(13,59,115,0.45)] backdrop-blur-md transition-[transform,background-color,box-shadow] duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_22px_44px_-20px_rgba(11,111,184,0.55)] sm:p-4"
+                >
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#0d3b73] to-[#0b6fb8] text-white shadow-[0_8px_18px_-8px_rgba(11,111,184,0.8)] transition-transform duration-500 group-hover:rotate-[-6deg] group-hover:scale-110">
+                    <Icon name={o.icon} className="h-[18px] w-[18px]" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-serif text-lg leading-tight text-[#0a1f3d]">
+                      {o.title}
+                    </span>
+                    <span className="block text-xs leading-snug text-slate-500 sm:text-[13px]">
+                      {o.text}
+                    </span>
+                  </span>
+                </Link>
+              </motion.li>
+            ))}
+          </motion.ul>
+
+          <motion.div {...enter(1)} className="mt-7">
+            <Link
+              href="/properties"
+              className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[#0a1f3d] to-[#0d3b73] px-7 text-sm font-medium text-white shadow-[0_14px_30px_-12px_rgba(10,31,61,0.7)]"
             >
-              <circle
-                cx="11"
-                cy="11"
-                r="7"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.8}
+              <span className="absolute inset-0 bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <span className="relative">Explore properties</span>
+              <Icon
+                name="arrow"
+                strokeWidth={2}
+                className="relative h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
               />
-              <path
-                d="M20 20l-3.5-3.5"
-                stroke="currentColor"
-                strokeWidth={1.8}
-                strokeLinecap="round"
-              />
-            </svg>
-
-            <div className="relative h-10 flex-1">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                aria-label="Search by location, property or project"
-                className="peer absolute inset-0 w-full bg-transparent text-[15px] text-[#0a1f3d] outline-none"
-              />
-              {!query && (
-                <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                  <AnimatePresence initial={false}>
-                    <motion.span
-                      key={hint}
-                      className="absolute inset-0 truncate text-[15px] leading-10 text-slate-400"
-                      initial={{ y: 14, opacity: 0, filter: "blur(4px)" }}
-                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                      exit={{ y: -14, opacity: 0, filter: "blur(4px)" }}
-                      transition={{ duration: 0.5, ease: EASE }}
-                    >
-                      {PLACEHOLDERS[hint]}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
-              )}
-            </div>
-
-            <motion.button
-              type="submit"
-              aria-label="Search"
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.94 }}
-              className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[#0d3b73] to-[#0b6fb8] text-white shadow-[0_8px_20px_-6px_rgba(11,111,184,0.8)]"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] transition-transform duration-700 group-hover:translate-x-full" />
-              <svg viewBox="0 0 24 24" className="relative h-5 w-5">
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="6.5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                />
-                <path
-                  d="M20 20l-4-4"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                />
-              </svg>
-            </motion.button>
-          </motion.form>
-
-          <motion.div
-            {...enter(0.84)}
-            className="mt-4 flex flex-wrap items-center gap-3"
-          >
-            <Segmented
-              id="type"
-              options={TYPES[mode]}
-              value={type}
-              onChange={setType}
-            />
-            <BudgetMenu value={budget} onChange={setBudget} />
+            </Link>
           </motion.div>
         </div>
       </motion.div>

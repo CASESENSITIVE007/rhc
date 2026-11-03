@@ -21,42 +21,52 @@ const ACCENT =
 // Swap for a real photo, e.g. "/founder.jpg".
 const FOUNDER_IMAGE = "/founder.svg";
 
+const FOUNDER = "Nisar Khan";
+
 const JOURNEY = [
   {
+    year: "2000",
+    title: "Where it began",
+    text: "Individual effort, door-to-door outreach and the determination to establish ourselves. Without a team or an established business structure, we focused on meeting people, understanding their needs and earning their confidence.",
+  },
+  {
+    year: "2003",
+    title: "An organised team",
+    text: "What began as an individual endeavour gradually became a collective effort, giving us the foundation to pursue greater opportunities.",
+  },
+  {
+    year: "2011",
+    title: "Into real estate, with 10 people",
+    text: "A significant turning point. We developed our understanding of the industry through practical experience, customer interactions and close collaboration with our associates.",
+  },
+  {
+    year: "2014",
+    title: "A network of 300+",
+    text: "Our network had expanded to more than 300 people.",
+  },
+  {
     year: "2015",
-    title: "We started in Varanasi",
-    text: "One small office. A few homes in Lanka and Assi.",
-    label: "Problem",
-    note: "People did not know who to trust.",
+    title: "RHC World Private Limited",
+    text: "We formally registered the company, giving our growing operations a corporate identity and a more structured direction.",
   },
   {
-    year: "2017",
-    title: "People began to trust us",
-    text: "We checked papers before showing any home.",
-    label: "Problem",
-    note: "Many sellers had no clear papers.",
+    year: "2026",
+    title: "Across Uttar Pradesh and Bihar",
+    text: "Involvement in approximately 25–30 real estate projects, with more than 500 people contributing their experience, dedication and ambition.",
   },
-  {
-    year: "2020",
-    title: "The lockdown",
-    text: "We showed homes by phone and video.",
-    label: "Problem",
-    note: "No one could visit the sites.",
-  },
-  {
-    year: "2022",
-    title: "We grew beyond Varanasi",
-    text: "We began work in Sarnath, Cantonment and nearby towns.",
-    label: "Problem",
-    note: "Every place had different prices.",
-  },
-  {
-    year: "2025",
-    title: "Today",
-    text: "Homes, projects and investments, all in one place.",
-    label: "Our goal",
-    note: "Keep buying property simple for everyone.",
-  },
+];
+
+const LOOKING_AHEAD = [
+  "These 26 years have brought opportunities, challenges and considerable learning. Every stage has strengthened our conviction that a business grows through the relationships it maintains and the responsibilities it fulfils.",
+  "Looking ahead, we aim to expand our presence in real estate development, colony development and property marketing. Our priority is to build on our experience, strengthen our capabilities and undertake future projects with greater planning and accountability.",
+  "We remain grateful to our customers, colleagues and associates for their continued confidence in us. Their support has shaped our journey, and we look forward to building the next chapter together.",
+];
+
+const STATS = [
+  ["2000", "Journey began"],
+  ["25–30", "Projects"],
+  ["500+", "People with us"],
+  ["2", "States"],
 ];
 
 /** Section heading that slides up into view. */
@@ -153,7 +163,7 @@ function Portrait({ ready }: { ready: boolean }) {
           >
             <Image
               src={FOUNDER_IMAGE}
-              alt="Founder of RHC World"
+              alt={`${FOUNDER}, founder and owner of RHC World`}
               fill
               preload
               sizes="(min-width: 1024px) 420px, 90vw"
@@ -185,8 +195,8 @@ function Portrait({ ready }: { ready: boolean }) {
           animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.9, ease: EASE, delay: ready ? 1.5 : 0 }}
         >
-          <p className="font-serif text-lg leading-tight text-[#0a1f3d]">Founder and owner</p>
-          <p className="mt-0.5 text-xs text-slate-500">RHC World, Varanasi</p>
+          <p className="font-serif text-lg leading-tight text-[#0a1f3d]">{FOUNDER}</p>
+          <p className="mt-0.5 text-xs text-slate-500">Founder &amp; Owner, RHC World</p>
         </motion.div>
 
         {/* Floating key tag */}
@@ -260,9 +270,6 @@ function Journey() {
               <p className={`font-serif text-3xl ${ACCENT}`}>{step.year}</p>
               <h3 className="mt-2 font-serif text-xl text-[#0a1f3d]">{step.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-500">{step.text}</p>
-              <p className="mt-4 border-t border-[#0a1f3d]/[0.07] pt-4 text-sm text-slate-600">
-                <span className="font-semibold text-[#0a1f3d]">{step.label}:</span> {step.note}
-              </p>
             </motion.article>
           </li>
         );
@@ -327,8 +334,8 @@ export default function AboutView() {
             </h1>
 
             <motion.p {...enter(0.55)} className="mt-6 max-w-md text-lg leading-relaxed text-slate-600">
-              We help you buy a home or invest in property in Varanasi and nearby areas. Simple and
-              honest.
+              {FOUNDER} is the founder and owner of RHC World Private Limited. We help you buy a
+              home or invest in property across Uttar Pradesh and Bihar. Simple and honest.
             </motion.p>
 
             <motion.div {...enter(0.7)} className="mt-10">
@@ -353,12 +360,18 @@ export default function AboutView() {
         </div>
       </section>
 
-      {/* Story */}
+      {/* Founder's story, in his words */}
       <section className="border-y border-[#0a1f3d]/[0.06] bg-white py-24 sm:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-10 lg:grid-cols-2 lg:gap-20">
           <div>
-            <Heading>
-              Our <em className={ACCENT}>story</em>
+            <motion.p
+              {...reveal}
+              className="text-xs font-semibold uppercase tracking-[0.25em] text-[#0b6fb8]"
+            >
+              Founder &amp; Owner
+            </motion.p>
+            <Heading className="mt-3">
+              {FOUNDER} — <em className={ACCENT}>my journey</em>
             </Heading>
             <motion.span
               aria-hidden
@@ -370,20 +383,42 @@ export default function AboutView() {
             />
             <motion.blockquote {...reveal} className="mt-8">
               <p className="max-w-md font-serif text-2xl italic leading-snug text-[#0b6fb8] sm:text-[28px]">
-                “A home is a big decision. It should never feel like a guess.”
+                “These years have taught me to value trust, honour commitments and take
+                responsibility.”
               </p>
-              <footer className="mt-4 text-sm text-slate-500">— The founder, RHC World</footer>
+              <footer className="mt-4 text-sm text-slate-500">— {FOUNDER}, Founder &amp; Owner</footer>
             </motion.blockquote>
           </div>
 
-          <div className="flex flex-col justify-center gap-6 text-[17px] leading-[1.8] text-slate-600">
-            <motion.p {...reveal}>
-              Buying a home in Varanasi was hard. Many brokers, many prices, and no one to trust.
-            </motion.p>
-            <motion.p {...reveal} transition={{ ...reveal.transition, delay: 0.12 }}>
-              So we started small, with one rule: we show only what we have seen ourselves. Today we
-              help families across Kashi and Purvanchal. The rule is the same.
-            </motion.p>
+          <div className="flex flex-col justify-center">
+            <div className="flex flex-col gap-6 text-[17px] leading-[1.8] text-slate-600">
+              {[
+                "I began my journey in 2000, working independently and meeting people door to door. Through perseverance and the support of my team, I entered real estate in 2011 and formally established RHC World Private Limited in 2015.",
+                "By 2026, our work has extended across Uttar Pradesh and Bihar, with involvement in approximately 25–30 projects and over 500 people working with us.",
+                "These years have taught me to value trust, honour commitments and take responsibility. My ambition is to build on this foundation and create lasting opportunities for the people who grow with us.",
+              ].map((text, i) => (
+                <motion.p key={i} {...reveal} transition={{ ...reveal.transition, delay: i * 0.1 }}>
+                  {text}
+                </motion.p>
+              ))}
+            </div>
+
+            <dl className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {STATS.map(([value, label], i) => (
+                <motion.div
+                  key={label}
+                  {...reveal}
+                  transition={{ ...reveal.transition, delay: 0.1 + i * 0.08 }}
+                  className="rounded-2xl bg-[#f4f7fc] px-4 py-4 ring-1 ring-[#0b6fb8]/10"
+                >
+                  <dt className="sr-only">{label}</dt>
+                  <dd className="font-serif text-2xl text-[#0a1f3d]">{value}</dd>
+                  <dd className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+                    {label}
+                  </dd>
+                </motion.div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
@@ -395,11 +430,39 @@ export default function AboutView() {
             <Heading>
               Our <em className={ACCENT}>journey</em>
             </Heading>
-            <motion.p {...reveal} className="mt-4 text-slate-500">
-              How we started, and what we learnt.
+            <motion.p
+              {...reveal}
+              className="mt-4 text-xs font-semibold uppercase tracking-[0.25em] text-slate-400"
+            >
+              RHC World · 2000–2026
+            </motion.p>
+            <motion.p {...reveal} className="mx-auto mt-6 max-w-2xl leading-relaxed text-slate-600">
+              Those formative years taught us lessons in perseverance, commitment and personal
+              responsibility.
             </motion.p>
           </div>
           <Journey />
+
+          {/* Looking ahead */}
+          <motion.div
+            {...reveal}
+            className="relative mx-auto mt-24 max-w-4xl overflow-hidden rounded-[32px] bg-white p-8 shadow-[0_24px_60px_-36px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] sm:p-12"
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#7cc4ff]/20 blur-[80px]"
+            />
+            <h3 className="relative font-serif text-3xl text-[#0a1f3d] sm:text-4xl">
+              Looking <em className={ACCENT}>ahead</em>
+            </h3>
+            <div className="relative mt-6 flex flex-col gap-5 text-[16px] leading-[1.8] text-slate-600">
+              {LOOKING_AHEAD.map((text, i) => (
+                <motion.p key={i} {...reveal} transition={{ ...reveal.transition, delay: i * 0.1 }}>
+                  {text}
+                </motion.p>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 

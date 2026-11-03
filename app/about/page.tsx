@@ -4,7 +4,7 @@ import AboutView from "../components/about/AboutView";
 export const metadata: Metadata = {
   title: "About | RHC",
   description:
-    "Meet the founder behind RHC World — helping families buy homes and invest in property across Varanasi, Kashi and Purvanchal since 2015.",
+    "Meet Nisar Khan, founder and owner of RHC World Private Limited — helping people buy homes and invest in property across Uttar Pradesh and Bihar since 2015.",
 };
 
 export default function AboutPage() {

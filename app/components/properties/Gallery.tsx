@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import {
   useCallback,
@@ -88,13 +89,14 @@ function Lightbox({
         </button>
       </div>
 
-      <div className="relative flex flex-1 items-center justify-center px-4 sm:px-20">
-        <div className="relative aspect-[4/3] w-full max-w-6xl overflow-hidden rounded-3xl sm:aspect-[16/10] [max-height:72vh]">
+      <div className="relative flex min-h-0 flex-1 justify-center px-4 sm:px-20">
+        {/* Fills the space between the top bar and the thumbnails */}
+        <div className="relative w-full max-w-6xl">
           <AnimatePresence initial={false} custom={dir} mode="popLayout">
             <motion.div
               key={index}
               custom={dir}
-              className="absolute inset-0 cursor-grab overflow-hidden active:cursor-grabbing"
+              className="absolute inset-0 cursor-grab active:cursor-grabbing"
               variants={{
                 enter: (d: number) => ({ x: `${d * 18}%`, opacity: 0, scale: 1.04 }),
                 center: { x: 0, opacity: 1, scale: 1 },
@@ -112,11 +114,13 @@ function Lightbox({
                 else if (info.offset.x > 60) go(-1);
               }}
             >
-              <PhotoImage
-                photo={photos[index]}
+              {/* The whole original photo, scaled to fit — no crop or zoom */}
+              <Image
+                src={photos[index].src}
                 alt={`${name} — photo ${index + 1}`}
+                fill
                 sizes="(min-width: 1280px) 1152px, 100vw"
-                className="pointer-events-none select-none"
+                className="pointer-events-none select-none object-contain"
               />
             </motion.div>
           </AnimatePresence>

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useState } from "react";
 import { coverPhoto, type Property } from "../../data/properties";
 import Icon, { type IconName } from "./Icon";
 import PhotoImage from "./PhotoImage";
@@ -28,43 +27,6 @@ function Stat({
         {label}
       </span>
     </div>
-  );
-}
-
-export function SaveButton({
-  name,
-  className = "absolute right-3 top-3 border-white/30 bg-white/20 text-white backdrop-blur-md hover:bg-white/35",
-}: {
-  name: string;
-  className?: string;
-}) {
-  const [saved, setSaved] = useState(false);
-  return (
-    <motion.button
-      type="button"
-      onClick={() => setSaved((s) => !s)}
-      aria-pressed={saved}
-      aria-label={saved ? `Remove ${name} from saved` : `Save ${name}`}
-      whileTap={{ scale: 0.85 }}
-      className={`grid h-10 w-10 place-items-center rounded-full border transition-colors ${className}`}
-    >
-      <motion.span
-        key={String(saved)}
-        initial={{ scale: saved ? 0.4 : 1 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 500, damping: 15 }}
-      >
-        <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden>
-          <path
-            d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"
-            fill={saved ? "#ff5a6e" : "none"}
-            stroke={saved ? "#ff5a6e" : "currentColor"}
-            strokeWidth={1.8}
-            strokeLinejoin="round"
-          />
-        </svg>
-      </motion.span>
-    </motion.button>
   );
 }
 
@@ -127,7 +89,6 @@ export default function PropertyCard({
             </span>
           </div>
         </Link>
-        <SaveButton name={property.name} />
 
         {/* Details */}
         <div className="flex flex-1 flex-col px-2.5 pb-1.5 pt-5">

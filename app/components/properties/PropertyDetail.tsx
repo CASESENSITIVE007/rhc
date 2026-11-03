@@ -22,18 +22,18 @@ import { useIntroDone } from "../useIntroDone";
 import Gallery from "./Gallery";
 import Icon, { AMENITY_ICONS, type IconName } from "./Icon";
 import LocationMap from "./LocationMap";
-import PropertyCard, { SaveButton } from "./PropertyCard";
+import PropertyCard from "./PropertyCard";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const reveal = {
+export const reveal = {
   initial: { opacity: 0, y: 28 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.25 },
   transition: { duration: 0.9, ease: EASE },
 } as const;
 
-function CountUp({ value }: { value: number }) {
+export function CountUp({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   useEffect(() => {
@@ -51,7 +51,7 @@ function CountUp({ value }: { value: number }) {
   return <span ref={ref}>{value.toLocaleString("en-IN")}</span>;
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="overflow-hidden pb-1 font-serif text-[28px] leading-tight text-[#0a1f3d] sm:text-[32px]">
       <motion.span
@@ -67,7 +67,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ShareButton({ name }: { name: string }) {
+export function ShareButton({ name }: { name: string }) {
   const [copied, setCopied] = useState(false);
   const share = async () => {
     const url = window.location.href;
@@ -241,10 +241,6 @@ export default function PropertyDetail({ property }: { property: Property }) {
               </p>
             </div>
             <div className="flex gap-2">
-              <SaveButton
-                name={property.name}
-                className="border-[#0a1f3d]/15 bg-white text-[#0a1f3d] hover:border-[#0a1f3d]"
-              />
               <ShareButton name={property.name} />
             </div>
           </motion.div>

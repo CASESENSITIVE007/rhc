@@ -429,61 +429,636 @@
   ],
   "Plots": [
     {
-      "id": "babatpur-meadows",
-      "name": "Babatpur Meadows",
-      "location": "Babatpur, Varanasi",
+      "id": "ahraura-ratan-vinpin",
+      "name": "Ahraura Ratan/Vipin",
+      "branch": "Ramnagar",
+      "address": "Ahraura, Chitvishram, Mirzapur",
+      "pricePerSqft": "1000",
+      "area": 14380,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "20 Feet Plot Main Road",
       "coordinates": {
-        "lat": 25.444,
-        "lng": 82.859
+        "lat": 25.042544,
+        "lng": 83.033134
       },
       "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": true,
+      "images": [
+        "/images/plots/ahrauravipin.jpeg",
+        "/images/plots/ahrauravipin.jpeg",
+        "/images/plots/ahrauravipin.jpeg",
+        "/images/plots/ahrauravipin.jpeg",
+        "/images/plots/ahrauravipin.jpeg"
+      ]
+    },
+    {
+      "id": "ahraurabhanumati",
+      "name": "AhrauraBhanumati",
+      "branch": "Ramnagar",
+      "address": "Ahraura, Chitvishram, Mirzapur",
+      "pricePerSqft": "1000",
+      "area": 25024,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.042661,
+        "lng": 83.03314
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": true,
       "images": [
         "/hero_image.png",
         "/hero_image.png",
         "/hero_image.png",
         "/hero_image.png",
         "/hero_image.png"
-      ],
-      "type": "Plot + house",
-      "bedrooms": 3,
-      "bathrooms": 2,
-      "parking": 2,
-      "price": "₹74L",
-      "area": 1500,
-      "rent": 21000,
-      "facing": "North-East",
-      "status": "New launch",
-      "furnishing": "Unfurnished",
-      "description": "Independent homes on generous plots in a planned gated township near the airport. Wide internal roads, a park in every block and room to grow — an excellent long-term investment on the city's fastest-growing corridor.",
-      "amenities": [
-        "parking",
-        "security",
-        "power",
-        "gated",
-        "garden",
-        "water"
-      ],
-      "nearby": [
-        {
-          "name": "Airport",
-          "distance": "3 km",
-          "time": "6 min drive"
-        },
-        {
-          "name": "Babatpur Market",
-          "distance": "1 km",
-          "time": "3 min drive"
-        },
-        {
-          "name": "Varanasi Junction",
-          "distance": "20 km",
-          "time": "40 min drive"
-        },
-        {
-          "name": "Sarnath",
-          "distance": "22 km",
-          "time": "40 min drive"
-        }
+      ]
+    },
+    {
+      "id": "ahraurapappusingh",
+      "name": "Ahraurapappusingh",
+      "branch": "Ramnagar",
+      "address": "Ahraura, Chitvishram, Mirzapur",
+      "pricePerSqft": "1000",
+      "area": 31307,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "17 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.040659,
+        "lng": 83.036384
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": true,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "anandipur",
+      "name": "Anandipur",
+      "branch": "Ramnagar",
+      "address": "Chakiya Road, Anandipur, Ahraura, Mirzapur",
+      "pricePerSqft": "900",
+      "area": 22180,
+      "type": "Residential Plot",
+      "facing": "North",
+      "road": "16 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.018808,
+        "lng": 83.054671
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "chandi-hotel",
+      "name": "Chandi Hotel",
+      "branch": "Sonebhadra",
+      "address": "Robertsganj, Sonbhadra",
+      "pricePerSqft": "1800",
+      "area": 45148.5,
+      "type": "Residential Plot",
+      "facing": "West",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 24.703646,
+        "lng": 83.065852
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "dharmshala-2",
+      "name": "Dharmshala-2",
+      "branch": "Sonebhadra",
+      "address": "Robertsganj, Sonbhadra",
+      "pricePerSqft": "8000",
+      "area": 16688,
+      "type": "Residential Plot",
+      "facing": "South",
+      "road": "14 Feet Plot Road",
+      "coordinates": {
+        "lat": 24.691903,
+        "lng": 83.062075
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "ghorawal",
+      "name": "Ghorawal",
+      "branch": "Sonebhadra",
+      "address": "Ghorawal, Sonbhadra",
+      "pricePerSqft": "1800",
+      "area": 35963.14,
+      "type": "Residential Plot",
+      "facing": "South",
+      "road": "16 Feet Plot Road",
+      "coordinates": null,
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "godhana",
+      "name": "Godhana",
+      "branch": "Ramnagar",
+      "address": "Godhana, Mughalsarai, Chandauli",
+      "pricePerSqft": "2353",
+      "area": 37854.99,
+      "type": "Residential Plot",
+      "facing": "East",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.248346,
+        "lng": 83.136435
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "hinauti-2",
+      "name": "Hinauti-2",
+      "branch": "Ramnagar",
+      "address": "Rastogi Talab, Hinauti, Adalhat, Mirzapur",
+      "pricePerSqft": "1176",
+      "area": 51000,
+      "type": "Residential Plot",
+      "facing": "North",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.095499,
+        "lng": 83.033427
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": true,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "kudaran",
+      "name": "Kudaran.",
+      "branch": "Adalahat",
+      "address": "Kudaran, Adalhat, Mirzapur",
+      "pricePerSqft": "1600-1800",
+      "area": 121244,
+      "type": "Residential Plot",
+      "facing": "East",
+      "road": "60 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.059487,
+        "lng": 83.030251
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "narayanpur",
+      "name": "Narayanpur",
+      "branch": "Ramnagar",
+      "address": "Narayanpur Market, Narayanpur, Chunar, Mirzapur",
+      "pricePerSqft": "2400",
+      "area": 10947.5,
+      "type": "Residential Plot",
+      "facing": "North",
+      "road": "16 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.207449,
+        "lng": 83.022756
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "pagia-1",
+      "name": "Pagia-1",
+      "branch": "Sonebhadra",
+      "address": "Pagia, Robrtsganj, Sonbhadra",
+      "pricePerSqft": "1075",
+      "area": 22787,
+      "type": "Commercial Plot",
+      "facing": "East",
+      "road": "16 Feet Plot Road",
+      "coordinates": {
+        "lat": 24.817295,
+        "lng": 82.958234
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "pagia-2",
+      "name": "Pagia-2",
+      "branch": "Sonebhadra",
+      "address": "Pagia, Robrtsganj, Sonbhadra",
+      "pricePerSqft": "404",
+      "area": 52041,
+      "type": "Commercial Plot",
+      "facing": "East",
+      "road": "16 Feet Plot Road",
+      "coordinates": null,
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "pagia-3",
+      "name": "Pagia-3",
+      "branch": "Sonebhadra",
+      "address": "Pagia, Robrtsganj, Sonbhadra",
+      "pricePerSqft": "415",
+      "area": 46710,
+      "type": "Residential Plot",
+      "facing": "South",
+      "road": "40 Feet Plot Road",
+      "coordinates": {
+        "lat": 24.819485,
+        "lng": 82.959172
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "ramgarh",
+      "name": "Ramgarh",
+      "branch": "Sonebhadra",
+      "address": "Ramgarh, Sonbhadra",
+      "pricePerSqft": "1100",
+      "area": 48626,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 24.668125,
+        "lng": 83.238548
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "reusa",
+      "name": "Reusa",
+      "branch": "Ramnagar",
+      "address": "Reusa, Mughalsarai, Chandauli",
+      "pricePerSqft": "1800",
+      "area": 16221,
+      "type": "Residential Plot",
+      "facing": "East",
+      "road": "20 Feet Wide Road RCC",
+      "coordinates": {
+        "lat": 25.276212,
+        "lng": 83.170504
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "reusa-srvs",
+      "name": "Reusa SRVS",
+      "branch": "Ramnagar",
+      "address": "Reusa, Pachfedva, Mughalsarai, Chandauli",
+      "pricePerSqft": "1700",
+      "area": 13790,
+      "type": "Residential Plot",
+      "facing": "West",
+      "road": "18 Feet Plot Road",
+      "coordinates": null,
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "reusa-4-ss",
+      "name": "Reusa_4_SS",
+      "branch": "Ramnagar",
+      "address": "Reusa, Mughalsarai, Chandauli",
+      "pricePerSqft": "1800",
+      "area": 20020,
+      "type": "Residential Plot",
+      "facing": "South",
+      "road": "25 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.276152,
+        "lng": 83.170482
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "reusa-2",
+      "name": "Reusa-2",
+      "branch": "Ramnagar",
+      "address": "Reusa, Mughalsarai, Chandauli",
+      "pricePerSqft": "1700",
+      "area": 20276,
+      "type": "Residential Plot",
+      "facing": "East",
+      "road": "20 Feet Wide Road",
+      "coordinates": {
+        "lat": 25.276379,
+        "lng": 83.170041
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "reusa-3",
+      "name": "Reusa-3",
+      "branch": "Ramnagar",
+      "address": "Reusa, Mughalsarai, Chandauli",
+      "pricePerSqft": "1700",
+      "area": 10699.13,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.276396,
+        "lng": 83.169843
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "shahganj",
+      "name": "Shahganj",
+      "branch": "Sonebhadra",
+      "address": "Usari, Shahganj, Robertsganj, Sonbhadra",
+      "pricePerSqft": "735",
+      "area": 36657,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "16 Feet Wide Road",
+      "coordinates": {
+        "lat": 24.707095,
+        "lng": 82.960445
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "shahganj-2",
+      "name": "Shahganj_2",
+      "branch": "Sonebhadra",
+      "address": "Dohari NIFS, Shahganj, Sonebhadra",
+      "pricePerSqft": "736-1250",
+      "area": 26630,
+      "type": "Residential Plot",
+      "facing": "South",
+      "road": "15 Feet Plot Road",
+      "coordinates": null,
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "shahpur-nahar",
+      "name": "Shahpur_Nahar",
+      "branch": "Ramnagar",
+      "address": "Shahpur, Narayanpur, Chunar, Mirzapur",
+      "pricePerSqft": "1838",
+      "area": 25671,
+      "type": "Residential Plot",
+      "facing": "",
+      "road": "20 Feet Plot Road",
+      "coordinates": {
+        "lat": 25.211272,
+        "lng": 83.021396
+      },
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": false,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
+      ]
+    },
+    {
+      "id": "sukrit",
+      "name": "Sukrit",
+      "branch": "Ramnagar",
+      "address": "Sukrit, Robertsganj, Sonbhadra",
+      "pricePerSqft": "4000",
+      "area": 399996,
+      "type": "Independent House/Luxury",
+      "facing": "",
+      "road": "",
+      "coordinates": null,
+      "mapEmbedUrl": "",
+      "powerBackup": true,
+      "security": true,
+      "waterSupply": true,
+      "park": true,
+      "images": [
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png",
+        "/hero_image.png"
       ]
     }
   ]

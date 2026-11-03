@@ -2,23 +2,34 @@
 
 import { motion } from "motion/react";
 import { useState } from "react";
-import type { Property } from "../../data/properties";
+import type { NearbyPlace } from "../../data/properties";
 import Icon from "./Icon";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export default function LocationMap({ property }: { property: Property }) {
+type Place = {
+  name: string;
+  /** Address or area, e.g. "Lanka, Varanasi". */
+  location: string;
+  coordinates: { lat: number; lng: number } | null;
+  mapEmbedUrl?: string;
+  nearby?: NearbyPlace[];
+};
+
+export default function LocationMap({ property }: { property: Place }) {
   const [loaded, setLoaded] = useState(false);
-  const { lat, lng } = property.coordinates;
-  const locality = property.location.split(",")[0];
+  const { coordinates } = property;
 
   // Google's free embed, no API key needed: the pasted embed link if there is
-  // one, otherwise a pin at the coordinates.
+  // one, otherwise a pin at the coordinates, otherwise a search for the address.
+  const query = encodeURIComponent(
+    coordinates ? `${coordinates.lat},${coordinates.lng}` : property.location,
+  );
   const embedUrl =
     property.mapEmbedUrl ||
-    `https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
-  const viewUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    `https://maps.google.com/maps?q=${query}&z=${coordinates ? 15 : 13}&output=embed`;
+  const viewUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${query}`;
 
   return (
     <div className="grid overflow-hidden rounded-[30px] bg-white shadow-[0_24px_60px_-36px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] lg:grid-cols-[1.6fr_1fr]">
@@ -54,10 +65,10 @@ export default function LocationMap({ property }: { property: Property }) {
       <div className="flex flex-col p-6 sm:p-8">
         <p className="flex items-center gap-2 text-sm font-semibold text-[#0a1f3d]">
           <Icon name="pin" className="h-4 w-4 text-[#0b6fb8]" />
-          Near {locality}, Varanasi
+          {property.location}
         </p>
         <ul className="mt-5 flex flex-col">
-          {property.nearby.map((place, i) => (
+          {(property.nearby ?? []).map((place, i) => (
             <motion.li
               key={place.name}
               className="flex items-center gap-4 rounded-2xl px-3 py-3.5 transition-colors duration-300 hover:bg-[#0a1f3d]/[0.03]"
@@ -84,6 +95,13 @@ export default function LocationMap({ property }: { property: Property }) {
             </motion.li>
           ))}
         </ul>
+        {!property.nearby?.length && (
+          <p className="text-sm leading-relaxed text-slate-500">
+            {coordinates || property.mapEmbedUrl
+              ? "Ask us about schools, markets and transport near this site — we’ll walk you through the area on your visit."
+              : "The map shows the area. We’ll share the exact location and take you there on a site visit."}
+          </p>
+        )}
 
         <div className="mt-auto flex flex-wrap gap-2 pt-6">
           <a

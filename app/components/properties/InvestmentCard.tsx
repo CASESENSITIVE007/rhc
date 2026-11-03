@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import { coverPhoto, rentalYield, type Property } from "../../data/properties";
 import Icon from "./Icon";
 import PhotoImage from "./PhotoImage";
-import { SaveButton } from "./PropertyCard";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -49,7 +48,6 @@ export default function InvestmentCard({
             {property.status}
           </span>
         </Link>
-        <SaveButton name={property.name} />
 
         {/* Details */}
         <div className="flex flex-1 flex-col px-2.5 pb-1.5 pt-5">

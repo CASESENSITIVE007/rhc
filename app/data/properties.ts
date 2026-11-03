@@ -61,6 +61,31 @@ export type Property = {
   images: string[];
 };
 
+/** A plot site, in the same columns as the plots sheet. */
+export type Plot = {
+  id: string;
+  name: string;
+  branch: string;
+  address: string;
+  /** Rate in ₹ per sq ft: "1000", or a range such as "1600-1800". */
+  pricePerSqft: string;
+  area: number; // sq ft
+  type: string;
+  /** Empty when not known. */
+  facing: string;
+  /** Empty when not known. */
+  road: string;
+  /** null when not known — the map then searches for the address. */
+  coordinates: { lat: number; lng: number } | null;
+  mapEmbedUrl?: string;
+  powerBackup: boolean;
+  security: boolean;
+  waterSupply: boolean;
+  park: boolean;
+  /** Paths under /public. The first is the card photo. */
+  images: string[];
+};
+
 export const AMENITY_LABELS: Record<AmenityKey, string> = {
   parking: "Covered car parking",
   security: "24/7 security",
@@ -79,10 +104,12 @@ export const AMENITY_LABELS: Record<AmenityKey, string> = {
 // Listings live in properties.json, grouped by filter: each property takes its
 // category from the section it sits in. The order of the sections and of the
 // listings in them is the order they appear on the site.
-const byCategory = propertiesData as Record<
-  PropertyCategory,
-  Omit<Property, "category">[]
->;
+// The "Plots" section uses the plot columns instead, so it is kept apart.
+const { Plots, ...homeSections } = propertiesData;
+
+export const PLOTS = Plots as Plot[];
+
+const byCategory = homeSections as Record<string, Omit<Property, "category">[]>;
 
 export const PROPERTIES: Property[] = Object.entries(byCategory).flatMap(
   ([category, list]) =>
@@ -91,6 +118,32 @@ export const PROPERTIES: Property[] = Object.entries(byCategory).flatMap(
 
 export function getProperty(id: string) {
   return PROPERTIES.find((p) => p.id === id);
+}
+
+export function getPlot(id: string) {
+  return PLOTS.find((p) => p.id === id);
+}
+
+const rupees = (n: string) => Number(n).toLocaleString("en-IN");
+
+/** "1000" → "₹1,000/sq ft", "1600-1800" → "₹1,600–1,800/sq ft". */
+export function plotRate(p: Plot) {
+  return `₹${p.pricePerSqft.split("-").map(rupees).join("–")}/sq ft`;
+}
+
+/** "20 Feet Plot Main Road" → "20 ft road"; empty when not known. */
+export function roadWidth(p: Plot) {
+  const feet = p.road.match(/(\d+)\s*feet/i)?.[1];
+  return feet ? `${feet} ft road` : p.road;
+}
+
+/** Other sites, the same branch first. */
+export function similarPlots(p: Plot) {
+  const others = PLOTS.filter((o) => o.id !== p.id);
+  return [
+    ...others.filter((o) => o.branch === p.branch),
+    ...others.filter((o) => o.branch !== p.branch),
+  ];
 }
 
 /** "₹1.3Cr" → 13000000, "₹86L" → 8600000. */
@@ -147,16 +200,19 @@ const GALLERY_CROPS = [
 
 export type Photo = { src: string; position?: string; zoom?: number };
 
+type HasImages = { id: string; images: string[] };
+
 /** The card photo: the first of the listing's images. */
-export function coverPhoto(p: Property): Photo {
+export function coverPhoto(p: HasImages): Photo {
   const src = p.images[0] ?? PLACEHOLDER_IMAGE;
   if (src !== PLACEHOLDER_IMAGE) return { src };
-  const i = Math.max(0, PROPERTIES.indexOf(p));
+  // Pick a crop from the id, so each listing keeps the same one.
+  const i = [...p.id].reduce((sum, c) => sum + c.charCodeAt(0), 0);
   return { src, position: COVER_CROPS[i % COVER_CROPS.length] };
 }
 
 /** Photos for the detail page gallery, the card photo first. */
-export function galleryPhotos(p: Property): Photo[] {
+export function galleryPhotos(p: HasImages): Photo[] {
   return [
     coverPhoto(p),
     ...p.images.slice(1).map((src, i) =>

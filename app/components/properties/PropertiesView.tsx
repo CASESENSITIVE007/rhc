@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CATEGORIES,
+  PLOTS,
   PROPERTIES,
   rentalYield,
   type PropertyCategory,
@@ -12,6 +13,7 @@ import {
 import { useIntroDone } from "../useIntroDone";
 import Icon from "./Icon";
 import InvestmentCard from "./InvestmentCard";
+import PlotCard from "./PlotCard";
 import PropertyCard from "./PropertyCard";
 import PropertyRail, { RAIL_CARD } from "./PropertyRail";
 
@@ -19,6 +21,10 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 const ACCENT =
   "bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] bg-clip-text pr-1 text-transparent";
+
+// Second row of chips, shown under the Plots filter. Matches the plot's type.
+const PLOT_KINDS = ["All", "Residential", "Commercial"] as const;
+type PlotKind = (typeof PLOT_KINDS)[number];
 
 const INVESTMENTS = [...PROPERTIES].sort((a, b) => rentalYield(b) - rentalYield(a));
 
@@ -57,10 +63,43 @@ function Chip({
 export default function PropertiesView() {
   const ready = useIntroDone();
   const [category, setCategory] = useState<PropertyCategory | null>(null);
+  const [plotKind, setPlotKind] = useState<PlotKind>("All");
 
-  const results = category
-    ? PROPERTIES.filter((p) => p.category === category)
-    : PROPERTIES;
+  const selectCategory = (c: PropertyCategory | null) => {
+    setCategory(c);
+    setPlotKind("All");
+  };
+
+  // True while the filter bar is pinned to the top of the screen.
+  const pinRef = useRef<HTMLDivElement>(null);
+  const [pinned, setPinned] = useState(false);
+  useEffect(() => {
+    const update = () => setPinned((pinRef.current?.getBoundingClientRect().top ?? 1) <= 0);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  // Plots have their own data and card; "All" shows homes, then plots.
+  const homes = category ? PROPERTIES.filter((p) => p.category === category) : PROPERTIES;
+  const plots =
+    !category || category === "Plots"
+      ? PLOTS.filter((p) => plotKind === "All" || p.type.startsWith(plotKind))
+      : [];
+  const count = homes.length + plots.length;
+
+  const cell = (key: string, card: React.ReactNode) => (
+    <motion.div
+      key={key}
+      layout
+      initial={{ opacity: 0, scale: 0.94 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.5, ease: EASE }}
+    >
+      {card}
+    </motion.div>
+  );
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -91,87 +130,85 @@ export default function PropertiesView() {
           <span className="font-medium text-[#0a1f3d]">Properties</span>
         </motion.nav>
 
-        {/* Header */}
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-8">
-          <div className="max-w-2xl">
-            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-[#0a1f3d] sm:text-6xl">
-              {["Homes", "in", "Kashi."].map((word, i) => (
-                <span
-                  key={word}
-                  className="inline-block overflow-hidden pb-2 align-bottom"
-                >
-                  <motion.span
-                    className={`inline-block ${
-                      i === 2
-                        ? "bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] bg-clip-text pr-1 italic text-transparent"
-                        : "pr-3 sm:pr-4"
-                    }`}
-                    initial={{ y: "110%" }}
-                    animate={{ y: ready ? "0%" : "110%" }}
-                    transition={{
-                      duration: 1.1,
-                      ease: EASE,
-                      delay: ready ? 0.1 + i * 0.1 : 0,
-                    }}
-                  >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
-            </h1>
-            <motion.p
-              {...enter(0.35)}
-              className="mt-5 max-w-lg text-lg leading-relaxed text-slate-600"
-            >
-              Verified homes across Varanasi — each one visited, checked and
-              priced honestly by our team.
-            </motion.p>
-          </div>
-
-        </div>
-
         {/* All properties */}
-        <section id="all" className="mt-24 scroll-mt-28">
-          <h2 className="overflow-hidden pb-1 font-serif text-4xl leading-[1.1] text-[#0a1f3d] sm:text-5xl">
+        <section id="all" className="mt-6 scroll-mt-28">
+          <h1 className="overflow-hidden pb-1 font-serif text-5xl leading-[1.1] tracking-tight text-[#0a1f3d] sm:text-6xl">
             <motion.span
               className="block"
               initial={{ y: "105%" }}
-              whileInView={{ y: "0%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: EASE }}
+              animate={{ y: ready ? "0%" : "105%" }}
+              transition={{ duration: 1.1, ease: EASE, delay: ready ? 0.1 : 0 }}
             >
               All <em className={ACCENT}>properties</em>
             </motion.span>
-          </h2>
+          </h1>
 
-        {/* Filters */}
+        {/* Filters — stay pinned under the navbar while the grid scrolls; the
+            band behind them hides the cards passing underneath */}
+        <div
+          ref={pinRef}
+          className="pointer-events-none sticky top-0 z-30 -mx-5 -mt-16 px-5 pb-3 pt-24 sm:-mx-10 sm:-mt-20 sm:px-10 sm:pt-28"
+        >
+          <div
+            aria-hidden
+            className={`absolute inset-0 bg-[#f7f5f2] transition-opacity duration-300 after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-gradient-to-b after:from-[#f7f5f2] after:to-transparent ${
+              pinned ? "opacity-100" : "opacity-0"
+            }`}
+          />
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="sticky top-24 z-20 mt-8 flex rounded-[26px] bg-white/80 p-2 shadow-[0_18px_40px_-28px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] backdrop-blur-xl sm:top-28"
+          className="pointer-events-auto relative flex rounded-[26px] bg-white p-2 shadow-[0_20px_44px_-18px_rgba(10,31,61,0.4)] ring-1 ring-[#0a1f3d]/[0.08]"
         >
           <div
             role="group"
             aria-label="Property type"
             className="flex max-w-full gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            <Chip group="category" active={category === null} onClick={() => setCategory(null)}>
+            <Chip group="category" active={category === null} onClick={() => selectCategory(null)}>
               All
             </Chip>
             {CATEGORIES.map((c) => (
-              <Chip key={c} group="category" active={category === c} onClick={() => setCategory(c)}>
+              <Chip key={c} group="category" active={category === c} onClick={() => selectCategory(c)}>
                 {c}
               </Chip>
             ))}
           </div>
         </motion.div>
 
-        <p aria-live="polite" className="mt-8 text-sm text-slate-500">
+        {/* Plot type, only under the Plots filter */}
+        <AnimatePresence initial={false}>
+          {category === "Plots" && (
+            <motion.div
+              key="plot-kinds"
+              initial={{ opacity: 0, height: 0, y: -8 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -8 }}
+              transition={{ duration: 0.4, ease: EASE }}
+              className="relative"
+            >
+              <div
+                role="group"
+                aria-label="Plot type"
+                className="pointer-events-auto mt-2 inline-flex gap-1 rounded-[22px] bg-white p-1.5 shadow-[0_16px_36px_-20px_rgba(10,31,61,0.4)] ring-1 ring-[#0a1f3d]/[0.08]"
+              >
+                {PLOT_KINDS.map((k) => (
+                  <Chip key={k} group="plot-kind" active={plotKind === k} onClick={() => setPlotKind(k)}>
+                    {k === "All" ? "All plots" : k}
+                  </Chip>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        </div>
+
+        <p aria-live="polite" className="mt-5 text-sm text-slate-500">
           Showing{" "}
-          <span className="font-semibold text-[#0a1f3d]">{results.length}</span>{" "}
-          {results.length === 1 ? "property" : "properties"}
+          <span className="font-semibold text-[#0a1f3d]">{count}</span>{" "}
+          {count === 1 ? "property" : "properties"}
         </p>
 
         {/* Grid */}
@@ -180,23 +217,17 @@ export default function PropertiesView() {
           className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           <AnimatePresence mode="popLayout">
-            {results.map((p, i) => (
-              <motion.div
-                key={p.id}
-                layout
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.5, ease: EASE }}
-              >
-                <PropertyCard property={p} index={i % 3} className="h-full" />
-              </motion.div>
-            ))}
+            {homes.map((p, i) =>
+              cell(p.id, <PropertyCard property={p} index={i % 3} className="h-full" />),
+            )}
+            {plots.map((p, i) =>
+              cell(p.id, <PlotCard plot={p} index={(homes.length + i) % 3} className="h-full" />),
+            )}
           </AnimatePresence>
         </motion.div>
 
         <AnimatePresence>
-          {results.length === 0 && (
+          {count === 0 && (
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -214,7 +245,7 @@ export default function PropertiesView() {
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setCategory(null)}
+                  onClick={() => selectCategory(null)}
                   className="h-11 rounded-full border border-[#0a1f3d]/15 px-6 text-sm font-medium text-[#0a1f3d] transition-colors hover:border-[#0a1f3d]"
                 >
                   Show all properties
