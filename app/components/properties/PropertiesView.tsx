@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
+  CATEGORIES,
   PROPERTIES,
-  priceInRupees,
   rentalYield,
+  type PropertyCategory,
 } from "../../data/properties";
 import { useIntroDone } from "../useIntroDone";
 import Icon from "./Icon";
@@ -20,23 +21,6 @@ const ACCENT =
   "bg-gradient-to-r from-[#0b6fb8] to-[#1f4e8c] bg-clip-text pr-1 text-transparent";
 
 const INVESTMENTS = [...PROPERTIES].sort((a, b) => rentalYield(b) - rentalYield(a));
-
-const BUDGETS = [
-  { label: "Any budget", min: 0, max: Infinity },
-  { label: "Under ₹1Cr", min: 0, max: 1e7 },
-  { label: "₹1Cr – ₹2Cr", min: 1e7, max: 2e7 },
-  { label: "Above ₹2Cr", min: 2e7, max: Infinity },
-];
-
-const BEDROOMS = [0, 2, 3, 4];
-
-const SORTS = {
-  featured: "Featured",
-  "price-asc": "Price: low to high",
-  "price-desc": "Price: high to low",
-  area: "Largest first",
-} as const;
-type Sort = keyof typeof SORTS;
 
 function Chip({
   active,
@@ -72,34 +56,17 @@ function Chip({
 
 export default function PropertiesView() {
   const ready = useIntroDone();
-  const [budget, setBudget] = useState(0);
-  const [beds, setBeds] = useState(0);
-  const [sort, setSort] = useState<Sort>("featured");
+  const [category, setCategory] = useState<PropertyCategory | null>(null);
 
-  const results = useMemo(() => {
-    const { min, max } = BUDGETS[budget];
-    const list = PROPERTIES.filter((p) => {
-      const price = priceInRupees(p.price);
-      return price >= min && price < max && p.bedrooms >= beds;
-    });
-    if (sort === "price-asc")
-      list.sort((a, b) => priceInRupees(a.price) - priceInRupees(b.price));
-    if (sort === "price-desc")
-      list.sort((a, b) => priceInRupees(b.price) - priceInRupees(a.price));
-    if (sort === "area") list.sort((a, b) => b.area - a.area);
-    return list;
-  }, [budget, beds, sort]);
+  const results = category
+    ? PROPERTIES.filter((p) => p.category === category)
+    : PROPERTIES;
 
   const enter = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
     animate: ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
     transition: { duration: 0.9, ease: EASE, delay: ready ? delay : 0 },
   });
-
-  const reset = () => {
-    setBudget(0);
-    setBeds(0);
-  };
 
   return (
     <main className="relative isolate flex-1 overflow-x-clip bg-[#f7f5f2] pb-28 pt-32 sm:pt-40">
@@ -161,24 +128,6 @@ export default function PropertiesView() {
             </motion.p>
           </div>
 
-          <motion.dl
-            {...enter(0.45)}
-            className="flex divide-x divide-[#0a1f3d]/10 rounded-3xl bg-white/70 py-4 shadow-[0_18px_40px_-26px_rgba(10,31,61,0.4)] ring-1 ring-[#0a1f3d]/[0.06] backdrop-blur-md"
-          >
-            {[
-              [String(PROPERTIES.length), "Listings"],
-              [String(new Set(PROPERTIES.map((p) => p.location)).size), "Localities"],
-              ["100%", "Verified"],
-            ].map(([value, label]) => (
-              <div key={label} className="px-6 text-center sm:px-8">
-                <dt className="sr-only">{label}</dt>
-                <dd className="font-serif text-3xl text-[#0a1f3d]">{value}</dd>
-                <dd className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                  {label}
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
         </div>
 
         {/* All properties */}
@@ -201,62 +150,28 @@ export default function PropertiesView() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="sticky top-24 z-20 mt-8 flex flex-wrap items-center gap-3 rounded-[26px] bg-white/80 p-2 shadow-[0_18px_40px_-28px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] backdrop-blur-xl sm:top-28"
+          className="sticky top-24 z-20 mt-8 flex rounded-[26px] bg-white/80 p-2 shadow-[0_18px_40px_-28px_rgba(10,31,61,0.45)] ring-1 ring-[#0a1f3d]/[0.06] backdrop-blur-xl sm:top-28"
         >
           <div
             role="group"
-            aria-label="Budget"
+            aria-label="Property type"
             className="flex max-w-full gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {BUDGETS.map((b, i) => (
-              <Chip
-                key={b.label}
-                group="budget"
-                active={budget === i}
-                onClick={() => setBudget(i)}
-              >
-                {b.label}
+            <Chip group="category" active={category === null} onClick={() => setCategory(null)}>
+              All
+            </Chip>
+            {CATEGORIES.map((c) => (
+              <Chip key={c} group="category" active={category === c} onClick={() => setCategory(c)}>
+                {c}
               </Chip>
             ))}
           </div>
-          <span className="hidden h-6 w-px bg-[#0a1f3d]/10 md:block" />
-          <div role="group" aria-label="Bedrooms" className="flex gap-1">
-            {BEDROOMS.map((n) => (
-              <Chip
-                key={n}
-                group="beds"
-                active={beds === n}
-                onClick={() => setBeds(n)}
-              >
-                {n === 0 ? "Any beds" : `${n}+ BHK`}
-              </Chip>
-            ))}
-          </div>
-          <label className="relative ml-auto flex items-center">
-            <span className="sr-only">Sort by</span>
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value as Sort)}
-              className="h-10 cursor-pointer appearance-none rounded-full border border-[#0a1f3d]/15 bg-white pl-4 pr-10 text-sm font-medium text-[#0a1f3d] outline-none transition-colors hover:border-[#0a1f3d] focus-visible:ring-2 focus-visible:ring-[#0b6fb8]/40"
-            >
-              {Object.entries(SORTS).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-            <Icon
-              name="chevron"
-              strokeWidth={2}
-              className="pointer-events-none absolute right-4 h-3.5 w-3.5 rotate-90 text-[#0a1f3d]"
-            />
-          </label>
         </motion.div>
 
         <p aria-live="polite" className="mt-8 text-sm text-slate-500">
           Showing{" "}
           <span className="font-semibold text-[#0a1f3d]">{results.length}</span>{" "}
-          {results.length === 1 ? "home" : "homes"}
+          {results.length === 1 ? "property" : "properties"}
         </p>
 
         {/* Grid */}
@@ -290,19 +205,19 @@ export default function PropertiesView() {
               className="mt-4 rounded-[28px] border border-dashed border-[#0a1f3d]/20 bg-white/60 px-6 py-16 text-center"
             >
               <p className="font-serif text-2xl text-[#0a1f3d]">
-                No homes match those filters yet
+                No {category?.toLowerCase()} listed right now
               </p>
               <p className="mt-2 text-slate-500">
-                Try widening your budget — or tell us what you need and we’ll
-                find it.
+                New listings come in every week — tell us what you need and
+                we’ll find it.
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <button
                   type="button"
-                  onClick={reset}
+                  onClick={() => setCategory(null)}
                   className="h-11 rounded-full border border-[#0a1f3d]/15 px-6 text-sm font-medium text-[#0a1f3d] transition-colors hover:border-[#0a1f3d]"
                 >
-                  Clear filters
+                  Show all properties
                 </button>
                 <Link
                   href="/contact"
